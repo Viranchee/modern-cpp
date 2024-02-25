@@ -25,7 +25,7 @@ void integers() {
   cout << "S(size_t): " << sizeOfSizeT << "\tS(ptrdiff_t): " << sizeOfPtrDiffT
        << "\tS(int64_t): " << sizeOf64Int << endl;
 
-  //
+  // signed integer and unsigned integer
 }
 
 void floats() {}
