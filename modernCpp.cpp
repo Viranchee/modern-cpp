@@ -13,7 +13,8 @@ Something new: spaceship operator <=>
 #include "Chapters/common.h"
 
 int main(int argc, char **argv) {
-  ch1();
-  ch2();
+  // ch1();
+  // ch2();
+  ch3();
   return 0;
 }

@@ -1,3 +1,23 @@
 // Header file for ch1.c
 void ch1();
 void ch2();
+void ch3();
+void ch4();
+void ch5();
+void ch6();
+void ch7();
+void ch8();
+void ch9();
+void ch10();
+void ch11();
+void ch12();
+void ch13();
+void ch14();
+void ch15();
+void ch16();
+void ch17();
+void ch18();
+void ch19();
+void ch20();
+void ch21();
+void ch22();
