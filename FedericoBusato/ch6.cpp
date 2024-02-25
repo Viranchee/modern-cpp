@@ -1,1 +1,1 @@
-void chp6() {}
+void ch6() {}

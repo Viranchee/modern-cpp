@@ -1,4 +1,3 @@
-// #include "allChapters.h"
 #include "allExposed.h"
 
 extern void ch1();
@@ -25,13 +24,13 @@ extern void ch21();
 extern void ch22();
 
 void runFedericoChapters() {
-  // ch1();
-  // ch2();
+  ch1();
+  ch2();
   ch3();
 
   // FIXME: Files below don't compile properly
 
-  // ch4();
+  ch4();
   // ch5();
   // ch6();
   // ch7();
