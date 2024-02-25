@@ -1,5 +1,6 @@
 #include "common.h"
 #include <cstdint>
+#include <cstdio>
 #include <iostream>
 #include <stdio.h>
 #include <sys/types.h>
@@ -27,6 +28,19 @@ void integers() {
 
   // Overflow and Wraparound
   // signed integer and unsigned integer
+  // signed max positive = 2^(n-1) - 1
+  i8 = 125;
+  for (int j = 0; j < 10; j++) {
+
+    printf("i8: %d\n", i8);
+    i8++;
+    // Detect overflow
+    if (i8 < 0) {
+      printf("Overflow\n");
+      break;
+    }
+  }
+  cout << endl;
 }
 
 void floats() {}

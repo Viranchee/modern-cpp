@@ -37,5 +37,5 @@ get_property(dialect_libs GLOBAL PROPERTY MLIR_DIALECT_LIBS)
 get_property(conversion_libs GLOBAL PROPERTY MLIR_CONVERSION_LIBS)
 
 # Add all Cpp files from the Chapters directory
-file(GLOB_RECURSE CHAPTERS_FILES Chapters/*.cpp)
-add_executable(modernCpp modernCpp.cpp ${CHAPTERS_FILES}) 
+file(GLOB_RECURSE FEDERICO_FILES FedericoBusato/*.cpp)
+add_executable(modernCpp modernCpp.cpp ${FEDERICO_FILES}) 
