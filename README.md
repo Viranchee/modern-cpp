@@ -16,3 +16,9 @@ abbr -a -g gce 'git commit --allow-empty-message -m " "'
 - CMakeLists.txt. 
     - Set your C++ compiler
     - Clangd: generate compile_commands.json file
+
+- Github CLI:
+    - create PRs, squash merge PRs, pull origin main
+    - This is super fast compared to the browser, and keeps me productive
+
+

@@ -1,49 +1,160 @@
+#include <cfenv>
 #include <cstdint>
 #include <cstdio>
 #include <iostream>
+#include <limits>
 #include <stdio.h>
 #include <sys/types.h>
 
 using namespace std;
 
 void integers() {
-  // Model/Bits: ILP32: Windows/Unix 32-b
+  {
 
-  // Fixed width: Always prefer over int and unsigned
-  int8_t i8 = 99;
-  uint8_t u8 = i8 + 10; // These are typeDefs, not real types
+    // Model/Bits: ILP32: Windows/Unix 32-b
 
-  // IOSTREAM takes i8 & u8 as char
-  cout << "i8: " << i8 << "\tu8: " << u8 << "\tas Int: " << (int)u8 << endl;
+    // Fixed width: Always prefer over int and unsigned
+    int8_t i8 = 99;
+    uint8_t u8 = i8 + 10; // These are typeDefs, not real types
 
-  // size_t & ptrdiff_t are aliases data, can store biggest representable value
-  // on current arch
+    // IOSTREAM takes i8 & u8 as char
+    cout << "i8: " << i8 << "\tu8: " << u8 << "\tas Int: " << (int)u8 << endl;
 
-  auto sizeOfSizeT = sizeof(size_t);
-  auto sizeOfPtrDiffT = sizeof(ptrdiff_t);
-  auto sizeOf64Int = sizeof(int64_t);
-  cout << "S(size_t): " << sizeOfSizeT << "\tS(ptrdiff_t): " << sizeOfPtrDiffT
-       << "\tS(int64_t): " << sizeOf64Int << endl;
+    // size_t & ptrdiff_t are aliases data, can store biggest representable
+    // value on current arch
 
-  // Overflow and Wraparound
-  // signed integer and unsigned integer
-  // signed max positive = 2^(n-1) - 1
-  i8 = 125;
-  for (int j = 0; j < 10; j++) {
+    auto sizeOfSizeT = sizeof(size_t);
+    auto sizeOfPtrDiffT = sizeof(ptrdiff_t);
+    auto sizeOf64Int = sizeof(int64_t);
+    cout << "S(size_t): " << sizeOfSizeT << "\tS(ptrdiff_t): " << sizeOfPtrDiffT
+         << "\tS(int64_t): " << sizeOf64Int << endl;
 
-    printf("i8: %d\n", i8);
-    i8++;
-    // Detect overflow
-    if (i8 < 0) {
-      printf("Overflow\n");
-      break;
+    // Overflow and Wraparound
+    // signed integer and unsigned integer
+    // signed max positive = 2^(n-1) - 1
+    i8 = 125;
+    for (int j = 0; j < 10; j++) {
+
+      printf("i8: %d\n", i8);
+      i8++;
+      // Detect overflow
+      if (i8 < 0) {
+        printf("Overflow\n");
+        break;
+      }
     }
+    cout << endl;
   }
-  cout << endl;
+
+  // Signed
+  // If can be negative, use assertions for positive,
+  // Subscripts, sizes, and indices, use signed
+  // optimization (exploit undefined behavior in loops) // FIXME: I don't
+  // understand this
+
+  // Unsigned:
+  // Bitmasks, Optimizations, Safety critical systems, can never be negative
+
+  { // Query properties of types
+    cout << "MaxInt: " << numeric_limits<int>::max()
+         << "\tMinInt9: " << numeric_limits<int8_t>::min()
+         << "\tMaxUInt8: " << numeric_limits<uint8_t>::max() << endl;
+  }
+  { // Promotions and Truncations
+    int16_t i16 = 0xFFFF;
+    int64_t i64 = i16;
+    cout << "i16: " << i16 << "\ti64: " << i64 << endl;
+    i64 = 0xFFFF;
+    i16 = i64;
+    cout << "i64: " << i64 << "\ti16: " << i16 << endl;
+    i64 = 32769; // 2^15 + 1
+    i16 = i64;
+    cout << "i64: " << i64 << "\ti16: " << i16 << endl;
+  }
+  { // Undefined behaviors
+    // Using unsigned and signed types together, signed multiply
+    cout << "Infinite loop (failed, Clang), undefined behavior" << endl;
+    for (int i = 0; i < 4; i++) {
+      cout << i * 18446744073709551610 << endl;
+    }
+    { // Infinite loop
+
+      // int z = 8;
+      // for (int i = z; i < INT_MAX; i += 2) {
+      //   z = i;
+      // }
+      // cout << "z:" << z << endl;
+    }
+
+    // Detecting overflow/underflow for signed integers is hard, must be checked
+    // before performing operation
+  }
 }
 
-void floats() {}
-void floatIssues() {}
+void floats() {
+  { // Floats
+    /*
+
+    STD,    Precision, Sign, Exponent, Mantissa
+    IEEE754 32bit:    1,      8,       23
+    IEEE754 64bit:    1,     11,       52
+    IEEE754 128bit:   1,     15,       112
+    IEEE754 256bit:   1,     19,       236
+    IEEE754 16bit:    1,      5,       10
+    Google  16bit:    1,      8,       7
+    E4M3:            1,      4,       3
+    E5M2:            1,      5,       2
+    TF32:
+    Posit
+    MicroScaling Formats
+    Fixed point
+
+)
+
+    */
+    double d1 = 5E3;
+    d1 = 1.1e2;
+    float f1 = 1.1e2;
+    // normal or denormal:
+    // If Exponent is all 0, then it's a denormal number. Interesting math here
+    // Allows for more precision, but slower
+
+    /*
+      // Representations:
+      // Val      Sign    Exponent    Mantissa
+      // NaN      x       11111111    x
+      // Inf      x       11111111    0
+      // Largest  x       11111110    11111111
+      // Smalles  x       00000001    00000000
+      // Denormal x       00000000    x
+      // 0        x       00000000    0
+    */
+  }
+}
+void floatIssues() {
+  FE_ALL_EXCEPT;
+  feclearexcept(FE_ALL_EXCEPT);
+  auto x = 1.0 / 0.0; // compiles
+  cout << "Div by 0 exception:\t" << fetestexcept(FE_DIVBYZERO) << endl;
+  feclearexcept(FE_ALL_EXCEPT);
+  x = 0.0 / 0.0;
+  cout << "Invalid exception:\t" << (bool)fetestexcept(FE_INVALID) << endl;
+  feclearexcept(FE_ALL_EXCEPT);
+  x = 1e38f * 10;
+  cout << "Overflow exception:\t" << (bool)fetestexcept(FE_OVERFLOW) << endl;
+  feclearexcept(FE_ALL_EXCEPT);
+
+  // Use relative error for comparing floats
+  // For comparing, use epsilon
+
+  // Float/Double:
+  // Prefer using multiplication and division over addition and subtraction
+  // Reorganize and keep near numbers with the same scale
+  // If under a threshold, set to 0
+  // Scaling by powers of 2 is Safe & Fast
+  // Switch to log scale: Multiplication becomes addition
+  // Compensation algo: Kahan summation, Dekker's fast two sum, Rump's acc sum
+}
 
 // ch3.cpp
 void ch3() {
