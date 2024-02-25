@@ -8,7 +8,6 @@ set(CMAKE_CXX_COMPILER /opt/homebrew/opt/llvm/bin/clang++)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard to conform to")
 
-
 find_package(LLVM REQUIRED CONFIG)
 find_package(MLIR REQUIRED CONFIG)
 
@@ -37,4 +36,6 @@ add_definitions(${LLVM_DEFINITIONS})
 get_property(dialect_libs GLOBAL PROPERTY MLIR_DIALECT_LIBS)
 get_property(conversion_libs GLOBAL PROPERTY MLIR_CONVERSION_LIBS)
 
-add_executable(modernCpp.o modernCpp.cpp)
+# Add all Cpp files from the Chapters directory
+file(GLOB_RECURSE CHAPTERS_FILES Chapters/*.cpp)
+add_executable(modernCpp modernCpp.cpp ${CHAPTERS_FILES}) 
