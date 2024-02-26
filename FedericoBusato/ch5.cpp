@@ -1,5 +1,7 @@
+#include <cstddef>
 #include <iostream>
 #include <stdexcept>
+#include <sys/_types/_u_int8_t.h>
 
 using namespace std;
 
@@ -219,29 +221,253 @@ void heapAndStack() {
 }
 
 void initialization() {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
+
   {
-    [[maybe_unused]] int a1;
-    [[maybe_unused]] int a2(2);
-    [[maybe_unused]] int a5 = 5;
-    [[maybe_unused]] int a6 = 2u; // with implicit conversion
-    [[maybe_unused]] int a7 = int();
-    [[maybe_unused]] int a8 = int(42);
-    [[maybe_unused]] int a9 = {100};
-    [[maybe_unused]] int a10{1023};
+    int a1;
+    int a2(2);
+    int a5 = 5;
+    int a6 = 2u; // with implicit conversion
+    int a7 = int();
+    int a8 = int(42);
+    int a9 = {100};
+    int a10{1023};
+  }
+
+  { // Non static Data member init
+    struct S {
+      unsigned x = 3; // Equal init
+      unsigned y{4};  // Brace init
+    };
+    // push and pop -Wunused-variable
+
+    S s1;               // Default constructor
+    S s2{};             // Default constructor
+    S s3{100, -(-100)}; // Sets values
+    cout << "Default constructor: \t" << s1.x << ", " << s1.y << endl;
+    S s4 = {.y = 100}; // Designated Initializer, x = original init
+    // Destructuring / Structured binding
+    auto [x, y] = s4;
+    int b[2] = {1, 2}; // Array
+    auto [b1, b2] = b;
+    auto [t1, t2] = tuple<float, int>{3.14f, 42};
+  }
+#pragma GCC diagnostic pop
+}
+void pointerAndReference() {
+  {
+    int *pointer;
+    pointer = nullptr;
+    pointer = new int;
+    cout << "\tPtr: " << pointer;
+    *pointer = 10;
+    cout << hex;
+    cout << "\tV: 0x" << *pointer << endl;
+    // Get value stored at pointer's pointer
+    cout << "\tV: 0x" << **(int **)&pointer << endl;
+    cout << dec;
+    delete pointer;
+  }
+  {
+    // Pointers can be converted.
+    // Static_cast is not allowed, except for void*
+    int a = 420;
+    int *ptr = &a;
+    cout << "Ptr: " << ptr << "\tV: " << *ptr << "\tA: " << &ptr << endl;
+    cout << "Ptr: " << ptr << "\tV: " << *ptr << "\tA: " << &ptr << endl;
+    // Reference syntax
+    int &ref = *ptr;
+    cout << "RefV: " << ref << "\tA: " << &ref << "\tRef" << ref << endl;
+    //
+  }
+  {                            // Wild and dangling pointer
+    [[maybe_unused]] int *ptr; // Wild pointer
+    int *array = new int[10];
+    cout << "Memory created at: \t" << array << endl;
+    delete[] array;
+    // Dangling pointer: Pointer to memory that has been freed
+    cout << "Dangling pointer, Memory already freed at: " << array << endl;
+    array = nullptr; // No more side effects
+    delete[] array;
+  }
+  {
+    // References
+    // Safer than pointers, cannot be changed
+    int value = 420;
+    int &ref = value;
+    int &ref2 = ref;
+    ref2++;
+    ref++;
+    cout << "Double ref, init = 420, ref2++: " << ref2 << endl;
+
+    // Pointers
+    int *ptr = &value;
+    int *ptr2 = &value;
+    ptr++;
+    (*ptr2)++;
+    int &newRef = value;
+    newRef++;
+    cout << "Triple inc, init = 420, ptr2++, *ptr++, ref++: " << value << endl;
+  }
+  {
+    // References can be used to indicate fixed size arrays in Function
+    // Arguments
   }
 }
-void pointerAndReference() {}
-void constantAndLiterals() {}
-void volatility() {}
-void explicts() {}
+void constantAndLiterals() {
+  { // const
+    // Literal, "literal", nullptr, user defined literals
+
+    // Pass by reference, can use const
+    // void f1(const int *array) {}
+
+    // Pas by value, and const: Not useful
+    // void f2(const int x) {}
+
+    // const and int:
+    // Pointer Type     Pointer var?    Pointed value var?
+    // int*             var             var
+    // const int*       const           var
+    // int* const       var             const
+    // const int* const const           const (west notation)
+    // int const*       const           const (east notation)
+  }
+  { // constexpr
+    // const: Fixed overall the execution of program
+    // constexpr: Fixed at compile time
+
+    // Pros: Helps performance & memory usage
+    // Pros: Impacts compilation time
+    /*
+    eg.
+
+    constexpr int square(int val) {
+      return val * val;
+    }
+    square(10); // Compile time evaluation
+    int a = 10;
+    square(a); // Run time evaluation
+
+    CAN NOT CONTAIN try-catch, exceptions, RTTI, goto, asm, static, undefined
+    behavior (reinterpret_cast), unsafe union usage, overflow (signed int), etc
+    // assert() : C++14
+    // virtual: C++20
+
+    Non-Static member functions of run-time objects can never be used in
+    constexpr
+
+    Can use `static constexpr`
+
+    */
+  }
+  { // consteval
+    /*
+    Guarantees compile time evaluation of a function.
+    A non constant value produces compilation error
+
+    consteval int square(int val) {
+      return val * val;
+    }
+
+    square(10); // Compile time evaluation
+    int a = 10;
+    square(a); // Compile Error
+    */
+  }
+  { // constinit
+    /*
+
+  Compile time initializition
+  constexpr int square(int val) {
+    return val * val;
+  }
+  constinit int a = square(10); // Compile time evaluation
+  a = 420; Yes can change
+
+    */
+  }
+  { // if-constexpr
+    /*
+    auto f() {
+      if constexpr (sizeof(int) == 4)
+        return 4;
+      else
+        return 8;
+    }
+
+    Ternary NOT SUPPORTED
+
+    Compile time branching, producing less Assembly code
+
+    std::is_constant_evaluated() : C++20 BUGGY
+
+    Solution: if consteval
+
+     */
+  }
+}
+void volatility() {
+  {
+    /*
+    Avoid aggressive memory optimizations involving a pointer or object
+
+    Uses:
+    1. Low level programming: Driver, Interaction with Assembly
+    Force writing to a specific memory location
+
+    2. Multithreading: Variables shared between threads/processes to
+    communicate. Don't optimize, delay update
+
+    3. Benchmarking: Some ops need to not be optimized away
+
+    Note: volatile reads/writes can still be reordered w.r.t. non-volatile
+    onessd
+    */
+  }
+  {
+    volatile int *ptr = new int[1];
+    int pos = 128 * 1024 / sizeof(int);
+    ptr[pos] = 10; // SEGFAULT
+  }
+}
+void explicts() {
+  {
+    const int a = 10;
+    [[maybe_unused]] auto ptr = &a;
+    [[maybe_unused]] auto b = static_cast<long>(a);
+    [[maybe_unused]] auto c = const_cast<int &>(a);
+    [[maybe_unused]] auto d = reinterpret_cast<int *>(a);
+
+    // Reinterpret cast: bit level conversion of float to int
+    float x = 3.0f;
+    [[maybe_unused]] auto e = reinterpret_cast<int &>(x);
+    int *ptr2 = new int;
+    [[maybe_unused]] int x2 = reinterpret_cast<size_t>(ptr2);
+
+    // Array reshaping
+    int matrix[3][4];
+    [[maybe_unused]] int(&matrix2)[2][6] =
+        reinterpret_cast<int(&)[2][6]>(matrix);
+    [[maybe_unused]] int(*arrayRep)[6] = reinterpret_cast<int(*)[6]>(matrix);
+  }
+  {
+    /*
+    Type Puning
+
+    */
+  }
+  {}
+  {}
+}
 void sizeOf() {}
 // ch5.cpp
 void ch5() {
   cout << "Chapter 5: Memory" << endl;
-  heapAndStack();
-  initialization();
-  pointerAndReference();
-  constantAndLiterals();
+  // heapAndStack();
+  // initialization();
+  // pointerAndReference();
+  // constantAndLiterals();
   volatility();
   explicts();
   sizeOf();
