@@ -218,7 +218,18 @@ void heapAndStack() {
   }
 }
 
-void initialization() {}
+void initialization() {
+  {
+    [[maybe_unused]] int a1;
+    [[maybe_unused]] int a2(2);
+    [[maybe_unused]] int a5 = 5;
+    [[maybe_unused]] int a6 = 2u; // with implicit conversion
+    [[maybe_unused]] int a7 = int();
+    [[maybe_unused]] int a8 = int(42);
+    [[maybe_unused]] int a9 = {100};
+    [[maybe_unused]] int a10{1023};
+  }
+}
 void pointerAndReference() {}
 void constantAndLiterals() {}
 void volatility() {}
