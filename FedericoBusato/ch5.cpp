@@ -454,13 +454,43 @@ void explicts() {
   {
     /*
     Type Puning
+    Circumventing the type system of a programming language
+    To achieve an effect difficult/impossible to achieve within the bounds of
+    the formal language.
 
+
+    float abs(float x) {
+      return (x < 0.0f) ? -x : x;
+    }
+
+    // TYPE PUNING, UNDEFINED BEHAVIOR
+    float optimizedAbs(float x) {
+      int *ptr = reinterpret_cast<int *>(&x);
+      *ptr &= 0x7FFFFFFF;
+      return reinterpret_cast<float &>(ptr);
+    }
+
+    Avoiding undefined behavior: use memcpy
+
+    float v1 = 32.3f;
+    unsigned v2;
+    std::memcpy(&v2, &v1, sizeof(float));
+
+    Option 2: C++ 20: bit_cast
+
+    float v1 = 32.3f;
+    unsigned v2 = std::bit_cast<unsigned>(v1);
     */
   }
-  {}
-  {}
 }
-void sizeOf() {}
+void sizeOf() {
+  // Compile time operator. Size in bytes
+
+  // returns size_t (unsigned max width int)
+  // 0 only for empty array
+  // 1 for empty struct
+  // Takes Padding into account
+}
 // ch5.cpp
 void ch5() {
   cout << "Chapter 5: Memory" << endl;
