@@ -1,7 +1,6 @@
+#include <cassert>
 #include <cstdint>
 #include <iostream>
-// Disable individual flags, eg -Wdeprecated-enum-compare
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 using namespace std;
 
@@ -146,8 +145,10 @@ void structs() {
     cout << endl;
 
     // Print the whole struct bitfieldInstance's memory contents
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wbitfield-constant-conversion"
     bitfieldInstance.i10 = 0xFFFF;
+#pragma GCC diagnostic pop
     cout << "i10: " << bitfieldInstance.i10 << endl;
     bitfieldInstance.i1 += 1;
     bitfieldInstance.i1 += 101;
@@ -177,7 +178,86 @@ void unions() {
 
   // check type of variant
 }
-void controlFlow() {}
+
+void produceError() {
+  assert(1 == 0);
+  [[maybe_unused]] int arr[] = {1, 2, 3, 4, 5};
+}
+
+void controlFlow() {
+  // Short circuiting
+  if (true || (produceError(), false)) {
+    cout << "Short circuiting" << endl;
+  }
+
+  struct A {
+    int x;
+    int y;
+  };
+  A array[] = {{1, 2}, {5, 6}, {7, 1}};
+  for (auto [x1, y1] : array)
+    cout << x1 << "," << y1 << " "; // print:1,2 5,6 7,1
+
+  cout << endl;
+  cout << "Switch fallthrough" << endl;
+  char x = 'a';
+  switch (x) {
+  case 'a':
+    cout << "a" << endl;
+    [[fallthrough]];
+  case 'b':
+    cout << "b" << endl;
+    break;
+  default:
+    cout << "default" << endl;
+  }
+
+  if (int ret = 1000; ret < 10) {
+    cout << "ret<10: " << ret << endl;
+  } else {
+    cout << "ret>10: " << ret << endl;
+  }
+  { // Switch initializer
+    // i scope limited to the Switch statement
+    auto x = 50;
+    switch (auto i = 5; x) {
+    case 1:
+      cout << "1" << endl;
+      break;
+    case 5:
+      cout << "5" << endl;
+      break;
+    case 50:
+      cout << "50" << endl;
+      break;
+    default:
+      cout << "default" << i << " " << x << endl;
+    }
+
+    for (int i = 0; auto x : {'a', 'b', 'c'}) {
+      cout << i++ << ":" << x << " "
+           << "\t";
+    }
+    cout << endl;
+  }
+
+  [[maybe_unused]] int x1 = 0;
+}
+
+template <typename T> int template1SizeOfT(T value) {
+  auto x = 5;
+  if constexpr (sizeof(value) >= 4) {
+    x = 4;
+  } else {
+    x = 2;
+  }
+  x = sizeof(value);
+  return x;
+}
+template <typename T> int template2DeclType(T value) {
+  using R = decltype(value);
+  return R{};
+}
 
 // This comment is from ch4.cpp
 void ch4() {
@@ -187,6 +267,23 @@ void ch4() {
   // declAndDef();
   // enums();
   // structs();
-  unions();
+  // unions();
   controlFlow();
+
+  // Templates
+  cout << "Template" << endl;
+  cout << "sizeOf(Int)\t" << template1SizeOfT(1) << endl;
+  cout << "sizeOf(Float)\t" << template1SizeOfT(1.0f) << endl;
+  struct {
+    int x;
+    float y;
+    std::string z;
+  } a;
+  cout << "sizeOf(UnnamedStruct)\t" << template1SizeOfT(a) << endl;
+
+  // Decltype
+  cout << "Decltype" << endl;
+  cout << "Decltype(Int)\t" << template2DeclType(1) << endl;
+  cout << "Decltype(Float)\t" << template2DeclType(1.0f) << endl;
+  // cout << "Decltype(UnnamedStruct)" << template2DeclType(a) << endl; // ERROR
 }
