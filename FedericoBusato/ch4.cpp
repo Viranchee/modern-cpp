@@ -1,4 +1,3 @@
-#include <csetjmp>
 #include <cstdint>
 #include <iostream>
 // Disable individual flags, eg -Wdeprecated-enum-compare
@@ -131,8 +130,23 @@ void structs() {
       // int i32_2 : 32;
     } bitfieldInstance;
 
-    bitfieldInstance.i8 = 0xFF;
-    cout << "i8: " << bitfieldInstance.i8 << endl;
+#define i8_CONST 0b1010101
+    bitfieldInstance.i8 = i8_CONST;
+    bitfieldInstance.i1 = 0;
+
+    for (int i = 0; i < 4096; i++) {
+      bitfieldInstance.i10 = i;
+      if (bitfieldInstance.i8 != i8_CONST) {
+        cout << "#i8 changed: " << bitfieldInstance.i8 << endl;
+      }
+      if (bitfieldInstance.i1 != 0) {
+        cout << "#i1 changed: " << bitfieldInstance.i1 << endl;
+      }
+    }
+    cout << endl;
+
+    // Print the whole struct bitfieldInstance's memory contents
+
     bitfieldInstance.i10 = 0xFFFF;
     cout << "i10: " << bitfieldInstance.i10 << endl;
     bitfieldInstance.i1 += 1;
@@ -142,15 +156,37 @@ void structs() {
   }
 }
 
+void unions() {
+  union A {
+    int a;
+    char b;
+  } eg;
+  eg.a = 1023; // 0x3FF
+  eg.b = 0;    // 0x00
+  // The bits 0x3xx still stay set in the memory
+  cout << "Union: " << eg.a << endl;
+
+  // Std::variant is a type-safe union
+  std::variant<int, float, std::string> v;
+  v = 33;
+  cout << "t:" << v.index() << "\tval: " << std::get<int>(v) << endl;
+  v = 0.5f;
+  cout << "t:" << v.index() << "\tval: " << std::get<float>(v) << endl;
+  v = "Hello";
+  cout << "t:" << v.index() << "\tval: " << std::get<std::string>(v) << endl;
+
+  // check type of variant
+}
 void controlFlow() {}
 
 // This comment is from ch4.cpp
 void ch4() {
   cout << "Chapter 4: Basic Concepts 3" << endl;
   // Entities and Control Flow
-  entities();
-  declAndDef();
-  enums();
-  structs();
+  // entities();
+  // declAndDef();
+  // enums();
+  // structs();
+  unions();
   controlFlow();
 }
