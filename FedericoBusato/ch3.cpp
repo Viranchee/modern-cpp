@@ -75,7 +75,7 @@ void integers() {
     // Using unsigned and signed types together, signed multiply
     cout << "Infinite loop (failed, Clang), undefined behavior" << endl;
     for (int i = 0; i < 4; i++) {
-      cout << i * 18446744073709551610 << endl;
+      // cout << i * 18446744073709551610 << endl;
     }
     { // Infinite loop
 
@@ -115,6 +115,7 @@ void floats() {
     double d1 = 5E3;
     d1 = 1.1e2;
     float f1 = 1.1e2;
+    cout << "d1: " << d1 << "\tf1: " << f1 << endl;
     // normal or denormal:
     // If Exponent is all 0, then it's a denormal number. Interesting math here
     // Allows for more precision, but slower
@@ -143,6 +144,7 @@ void floatIssues() {
   x = 1e38f * 10;
   cout << "Overflow exception:\t" << (bool)fetestexcept(FE_OVERFLOW) << endl;
   feclearexcept(FE_ALL_EXCEPT);
+  cout << x << endl;
 
   // Use relative error for comparing floats
   // For comparing, use epsilon

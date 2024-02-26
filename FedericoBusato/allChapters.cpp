@@ -24,12 +24,9 @@ extern void ch21();
 extern void ch22();
 
 void runFedericoChapters() {
-  ch1();
-  ch2();
-  ch3();
-
-  // FIXME: Files below don't compile properly
-
+  // ch1();
+  // ch2();
+  // ch3();
   ch4();
   // ch5();
   // ch6();
