@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 
 using namespace std;
 
@@ -8,7 +9,7 @@ using namespace std;
 int globalData[] = {1, 2}; // Data segment
 int globalBss[1'000'000];  // BSS segment
 
-void heap() {
+void heapAndStack() {
   /*
    Stack segment: 1MB (Windows) or 8MB (Linux)
    if exceeded, hard crash
@@ -110,7 +111,7 @@ void heap() {
         matrix[i][j] = (i + 1) * (j + 1);
         // cout << matrix[i][j] << "\t";
       }
-      cout << endl;
+      // cout << endl;
     }
 
     // Free memory
@@ -184,13 +185,39 @@ void heap() {
     // Allocation fails for 36 TB
     int *ptr = new (nothrow) int[36'000'000'000'000];
     if (ptr == nullptr)
-      cout << "Allocation failed" << endl;
+      cout << "36 TB Allocation failed" << endl;
     else
       delete[] ptr;
+
+    struct Throws {
+      Throws() { throw runtime_error("Throws constructor"); }
+      ~Throws() { cout << "Throws destructor" << endl; }
+    };
+
+    // Allocation throws
+    // Throws *thrower = new (nothrow) Throws();
+
+    // Memory Leak
+    [[maybe_unused]] int *leak = new int;
+    auto bkp = leak;
+    // Memory now leaks, because it can never be freed
+    leak = nullptr;
+    delete bkp;
+  }
+  {                   // Dynamic Memory Allocation
+    int *x = new int; // OS gives in 4KB pages
+    // M1 allocates approx 256k Integers, i.e. 1MB of Page size
+    auto iterations = (1 << 18);
+    cout << "Allocating " << iterations << " page size" << endl;
+    int i;
+    for (i = 0; i < iterations * 97 / 100; i++) {
+      x[i] = i;
+    }
+    cout << i << " integers allocated" << endl;
+    // delete x;
   }
 }
 
-void stack() {}
 void initialization() {}
 void pointerAndReference() {}
 void constantAndLiterals() {}
@@ -200,8 +227,7 @@ void sizeOf() {}
 // ch5.cpp
 void ch5() {
   cout << "Chapter 5: Memory" << endl;
-  heap();
-  stack();
+  heapAndStack();
   initialization();
   pointerAndReference();
   constantAndLiterals();
