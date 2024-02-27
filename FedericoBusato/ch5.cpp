@@ -302,7 +302,7 @@ void pointerAndReference() {
     cout << "Double ref, init = 420, ref2++: " << ref2 << endl;
 
     // Pointers
-    int *ptr = &value;
+    [[maybe_unused]] int *ptr = &value;
     int *ptr2 = &value;
     ptr++;
     (*ptr2)++;
