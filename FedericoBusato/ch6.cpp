@@ -1,5 +1,7 @@
 #include <iostream>
 #include <ostream>
+#include <source_location>
+#include <type_traits>
 using namespace std;
 
 [[deprecated("PLEASE DO NOT USE")]] [[noreturn]] void throwingFunction(int x) {
@@ -93,7 +95,7 @@ void lambda() {
     return arr;
   };
   auto doubledArray = doublerArray(array, 5);
-  for (int i = 0; i < sizeof(array) / sizeof(int); i++)
+  for (int i = 0; i < (int)(sizeof(array) / sizeof(int)); i++)
     cout << doubledArray[i] << " ";
   cout << endl;
 
@@ -122,12 +124,148 @@ void lambda() {
   auto halverConstExpr = [](int x) constexpr { return x / 2; };
   cout << "ConstExprEval: " << doublerConstEval(halverConstExpr(3)) << endl;
 
+  // Templates
+  auto doubleTemplate = []<typename T>
+    requires std::is_arithmetic_v<T>
+  (T val) { return val * 2; };
+
+  cout << "TemplateLambda: " << doubleTemplate(3) << endl;
+  struct Random {};
+  // doubleTemplate(Random{});  // Error
+
+  // mutable Lambda expression
+
+  int var = 1;
+  auto doubleVar = [&var]() { var *= 2; };
+  doubleVar();
+  cout << "Captured Double: " << var << endl;
+  auto setMutable5 = [var]() mutable { var = 5; };
+  setMutable5();
+  cout << "Mutable Passby value Global is 5?: " << var << endl;
+
+  auto pleaseUse = [] [[nodiscard]] () { return 5; };
+  (void)pleaseUse();
+
+  class A {
+    int data = 1;
+    void f() {
+      [[maybe_unused]] auto copyData = [data = data]() { return data; };
+      [[maybe_unused]] auto copyByRef = [this]() { return data; };
+      [[maybe_unused]] auto copyByValue = [*this]() { return data; };
+    }
+  };
   //
 }
-void preprocessing() {}
+void preprocessing() {
+  //
+  // MACROs are EVIL. Do Not use Macro Expansion
+  /*
+  Macro Expansion: - Can't be debugged, Unexpected side effects, No
+  namespace/scope
+  */
+
+  // Preprocessors:
+  // Any statements starting with # are preprocessor directives
+  // #include , #define, #undef, #ifdef, #ifndef, #if, #else, #elif, #endif,
+  // #line, #error, #pragma
+  /*
+  #define, #undefine
+
+  Multi line Preprocessing: \
+
+  Indent: #  define
+
+  #if #else #endif
+
+  #if defined(MACRO) == #ifdef MACRO
+  #if !defined(MACRO) == #ifndef MACRO
+
+  */
+
+  /*
+  + Define in Cpp files
+  + After all includes
+  + Use parenthesis
+  - Hard to find compile errors
+  - Macro not always evaluated
+  - No Scope
+  - Sideeffects
+
+  Why use:
+  Conditional Compiling
+  With Assembly or other languages
+  Complex name replacing
+   */
+  cout << "l: " << __LINE__ << " f: " << __FILE__ << " f : " << __FUNCTION__
+       << " pf: " << __PRETTY_FUNCTION__ << " fnc: " << __func__
+       << " s: " << __STDC__ << endl;
+
+  auto loc = source_location::current();
+  cout << "line: " << loc.line() << ":" << loc.function_name() << endl;
+
+  // Select code based on C/C++ or Compiler or OS or Environment
+
+  // Date and Time
+  // auto dateTime = __DATE__ + __TIME__;
+
+#if __has_include(<ctime>)
+#include <ctime>
+#endif
+
+#if __cpp_lib_jthread
+  cout << "C++20 jthread" << endl;
+#endif
+
+  // Macros depend on Compilers and Environment
+
+  // #error "This is an error"
+  //  #warning "This is a warning"
+
+// #pragma message "OMG I CAN PRINT DURING COMPILE TIME"
+#pragma GCC diagnostic warning "-Wformat"
+
+#define CompileShowMessage _Pragma("message (\"OMGGG\")")
+
+  {}
+  // CompileShowMessage
+}
+// Token Pasting Operator
+
+#define FUNC_GEN_A(tA, tB)                                                     \
+  void tA##tB() {}
+#define FUNC_GEN_B(tA, tB)                                                     \
+  void tA##_##tB() {}
+
+FUNC_GEN_A(my, function);
+FUNC_GEN_B(my, function);
+
+void f(int) {}
+void f(int, int) {}
+void f(int, int, int) {}
+void f(int, int, int, int) {}
+void f(int, int, int, int, int) {}
+#define f(...) f(__VA_ARGS__)
+
+void preprocessing2() {
+  myfunction();
+  my_function();
+
+  // Variadics
+  f(1, 2, 3, 4, 5);
+
+  // Convert nimber literal to string, avoids runtime, compile time
+
+#define TO_LITERAL_AUX(x) #x
+#define TO_LITERA(x) TO_LITERAL_AUX(x)
+
+  auto lol = TO_LITERA(123);
+  cout << "Char123: " << lol << endl;
+}
+
 void ch6() {
   functions();
   functionPointersAndObjects();
   lambda();
   preprocessing();
+  preprocessing2();
 }
