@@ -227,33 +227,61 @@ struct TryStatic {
   static int &g() { return x; };
 };
 void defaultedConstructursDestructursOperators() {}
+
 void keywords() {
-  struct ConstEg {
-    int x = 5;
-    const int EVE = 42;
-    mutable int variable = 0;
 
-    int observer() const { return x; }
-    int inspector() const { return variable; } // R
-    int &observer() { return variable; }       // Overload: Allows R/W
-  } const c;
-  // c.EVE = 42; // Error: EVE is const
-  // c.x = 100; // Error: x is const
-  c.variable = 42;
-  // c.observer() = 42; // Doesnt work on const
+  // Const and Mutable
+  {
+    struct ConstEg {
+      int x = 5;
+      const int EVE = 42;
+      mutable int variable = 0;
 
-  // Changing inheritance attributes
-  struct A {
-  protected:
-    int protectedMember = 3;
-  };
-  struct B : A {
-  public:
-    using A::protectedMember;
-  } b;
+      int observer() const { return x; }
+      int inspector() const { return variable; } // R
+      int &observer() { return variable; }       // Overload: Allows R/W
+    } const c;
+    // c.EVE = 42; // Error: EVE is const
+    // c.x = 100; // Error: x is const
+    c.variable = 42;
+    // c.observer() = 42; // Doesnt work on const
+  }
+  // Changing inheritance attributes: using
+  {
 
-  b.protectedMember = 42; // OK: protectedMember is public in B
+    struct A {
+    protected:
+      int protectedMember = 3;
+    };
+    struct B : A {
+    public:
+      using A::protectedMember;
+    } b;
+
+    b.protectedMember = 42; // OK: protectedMember is public in B
+  }
+  {}
 }
+
+// Friend class and Friend method
+// Not symmetric, not transitive, not inherited
+struct A {
+  friend struct B;
+  friend int friendMethod(A a);
+  A(const A &) = delete;
+  A(int x1) : x{x1} {}
+
+private:
+  int x;
+};
+
+int friendMethod(A a) { return a.x; }
+
+struct B {
+  int f(A a) { return a.x; }
+};
+
+// Delete keyword
 
 void ch7() {
   cout << "Chapter 7: Object Oriented Programming" << endl;
@@ -266,4 +294,5 @@ void ch7() {
   defaultedConstructursDestructursOperators();
   keywords();
   //
+  A(42);
 }
