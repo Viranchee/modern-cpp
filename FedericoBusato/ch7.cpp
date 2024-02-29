@@ -118,7 +118,8 @@ void constructors() {
   struct ArrayWrap {
     int *arr, size;
 
-    ArrayWrap(int usize) : size{usize}, arr{new int[size]} {}
+    // ArrayWrap(int usize) : size{usize}, arr{new int[size]} {} // COMMON ERROR
+    ArrayWrap(int usize) : arr{new int[usize]}, size{usize} {} // FIXED
   };
 
   // Uniform Init
@@ -130,7 +131,7 @@ void constructors() {
     B(A a) {}
     void f() {}
   };
-  B b(A()); // Function declaration
+  B b((A())); // Function declaration
   // b.f();    // Error: b is a function
 
   // Constructors and Inheritance
