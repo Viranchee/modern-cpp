@@ -1,5 +1,7 @@
 #import <iostream>
 #include <ostream>
+#include <type_traits>
+#include <vector>
 
 using namespace std;
 
@@ -113,11 +115,110 @@ void inheritanceAndRtti() {
   }
 }
 void operatorOverload() {
+  struct Complex {
+    float real, imag;
+    Complex(float r, float i) : real(r), imag(i) {}
+    Complex operator+(const Complex &i2) const {
+      return Complex(real + i2.real, imag + i2.imag);
+    }
+    Complex operator-(const Complex &i2) const {
+      return Complex(real - i2.real, imag - i2.imag);
+    }
+    Complex operator*(const Complex &i2) const {
+      return Complex(real * i2.real - imag * i2.imag,
+                     real * i2.imag + imag * i2.real);
+    }
+    Complex operator/(const Complex &i2) const {
+      return Complex((real * i2.real + imag * i2.imag) /
+                         (i2.real * i2.real + i2.imag * i2.imag),
+                     (imag * i2.real - real * i2.imag) /
+                         (i2.real * i2.real + i2.imag * i2.imag));
+    }
+    bool operator==(const Complex &i2) const {
+      return real == i2.real && imag == i2.imag;
+    }
+    bool operator!=(const Complex &i2) const {
+      return real != i2.real || imag != i2.imag;
+    }
+
+    Complex operator[](int index) const {
+      if (index == 0)
+        return Complex(real, 0);
+      else if (index == 1)
+        return Complex(imag, 0);
+      else
+        throw "Invalid Index";
+    }
+
+    Complex operator[](int rscale, int iscale) const {
+      return Complex(real * rscale, imag * iscale);
+    }
+
+    Complex operator()() const { return Complex(-real, -imag); }
+    Complex operator()(Complex &other) const { return Complex(-real, -imag); }
+    // int operator()(int x) const { return x << 1; }
+
+    // conversion
+    explicit operator float() const { return real; }
+    explicit operator int() const { return (int)real; }
+    explicit operator bool() const { return real != 0 || imag != 0; }
+
+    // No custom operators
+    // Complex operator<|>(Complex) const { return Complex(-real, -imag); }
+
+    // Custom operator <|>: Returns
+
+  } n1(1, 2), n2(3, 4);
+
+  auto n3 = n1 + n2;
+  n3 = n1();
+  n3 = n1(n2);
 
   //
 }
 void cppObjectLayout() {
-  //
+  // Aggregate {}
+  // Trivial class: supports memcpy
+  // No user provided copy/move/default constructors or destructor
+  // No user provided copy/move/default assignment operator
+  // No virtual functions or virtual base classes
+  // No brace or equal initializer for non-static members
+  // All non-static members are trivial (recursively)
+
+  // No restrictions:
+  // User declared constructor different from default
+  // Static members
+  // Private/Protected members
+
+  // Standard Layout Class
+  // Same layout as C struct or union
+  // No virtual functions or virtual base classes
+  // Recursively non-static members, base and derived classes
+  // Only one control acess for non-static data members
+  // No base classes of same type as first non-static data member
+  // No non-static data members in the most derived class, at most one base
+  // class with non-static data members No base classes with non-static data
+  // members
+
+  struct StdLayout1 {
+    int x;
+    void y();
+  };
+
+  class StdLayout2 {
+    int x, y;
+    StdLayout1 z;
+  };
+
+  struct StdLayout3 {};
+  struct StdLayout4 : StdLayout1, StdLayout2, StdLayout3 {};
+
+  // POD Plain Old Data
+  // std::is_pod<class Tp> // Depricated in C++20
+  auto stdLayout = std::is_standard_layout<StdLayout3>::value;
+  stdLayout = std::is_trivial<StdLayout3>::value;
+  stdLayout = std::is_trivially_copyable<StdLayout3>::value;
+  cout << "Trivially copyable stdlayout3: " << stdLayout << endl;
 }
 
 void ch8() {
