@@ -83,11 +83,37 @@ void polymorphism() {
     // Abstract a; // Error: Cannot create object of abstract class
   }
 }
-void inheritance() {
+void inheritanceAndRtti() {
+  // Hierarchy: Base -> Derived1, Base -> Derived2
+  /*
+    Upcasting: Derived -> Base
+      static_cast / dynamic_cast
+      Safe, implicit or explicit
+    Downcasting: Base -> Derived
+      static_cast / dynamic_cast
+      Unsafe, explicit
+    Sidecasting: Derived1 -> Derived2
+      dynamic_cast
+      Unsafe, explicit
+  */
 
   //
+  { // RTTI
+    // dynamic_cast : conversion of polymorphic types
+    // typeid : type information (for Polymorphic classes, at least 1 virtual)
+    // type_info : class, type information returned by typeid operator
+    // type_info::name() : name of the type
+    // type_info::operator== : compare type_info objects
+  }
+  // Dynamic Casting
+  {
+    //  Remember, T& always contains value
+    // so, dynamic_cast<T&>(x) will throw exception if x is not of type T
+    // dynamic_cast<T*>(x) will return nullptr if x is not of type T
+  }
 }
 void operatorOverload() {
+
   //
 }
 void cppObjectLayout() {
@@ -97,7 +123,7 @@ void cppObjectLayout() {
 void ch8() {
   //
   polymorphism();
-  inheritance();
+  inheritanceAndRtti();
   operatorOverload();
   cppObjectLayout();
 }
