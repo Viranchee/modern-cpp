@@ -187,9 +187,73 @@ void copyConstructors() {
   };
   //
 }
-void destructor() {}
+void destructor() {
+  // Releases resources
+  // 1 Destructor.
+  // C++20: constexpr allowed
+  struct Array {
+    int *array;
+    Array(int size) : array{new int[size]} {}
+    ~Array() { delete[] array; }
+  };
+  // Never Inherited.
+  // Destruction order: current class -> parent class
+  // Reverse of construction order
+
+  // Default constructor / destruct
+
+  struct SomeStruct {
+    int x;
+
+  public:
+    SomeStruct() = default;
+    ~SomeStruct() = default;
+
+    SomeStruct(int x1) : x{x1} {}
+    SomeStruct(const SomeStruct &other) = default;
+    SomeStruct &operator=(const SomeStruct &other) = default;
+
+    static int someStatic() { return 42; }
+    // static const int sCons = 42; // Not allowed in local scope
+    static constexpr int sConsFunc() { return 42; }
+    // static int sCons;// = 42;
+  };
+  //
+}
+
+struct TryStatic {
+  static int x; // = 5 // Can't init value
+  static int f() { return x; };
+  static int &g() { return x; };
+};
 void defaultedConstructursDestructursOperators() {}
-void keywords() {}
+void keywords() {
+  struct ConstEg {
+    int x = 5;
+    const int EVE = 42;
+    mutable int variable = 0;
+
+    int observer() const { return x; }
+    int inspector() const { return variable; } // R
+    int &observer() { return variable; }       // Overload: Allows R/W
+  } const c;
+  // c.EVE = 42; // Error: EVE is const
+  // c.x = 100; // Error: x is const
+  c.variable = 42;
+  // c.observer() = 42; // Doesnt work on const
+
+  // Changing inheritance attributes
+  struct A {
+  protected:
+    int protectedMember = 3;
+  };
+  struct B : A {
+  public:
+    using A::protectedMember;
+  } b;
+
+  b.protectedMember = 42; // OK: protectedMember is public in B
+}
 
 void ch7() {
   cout << "Chapter 7: Object Oriented Programming" << endl;
