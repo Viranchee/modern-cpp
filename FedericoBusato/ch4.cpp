@@ -11,16 +11,16 @@ void entities() {
 }
 
 // 2 Declarations
-void declAndDef();
-void declAndDef();
+static void declAndDef();
+static void declAndDef();
 
 // Definition
-void declAndDef() {
+static void declAndDef() {
   // 1 definition, multiple declarations
   // eg. Function declaration and definition
   // Declaration's comments prioritized over definition's comments
 }
-void enums() {
+static void enums() {
   enum Color { RED, GREEN, BLUE };
   Color c = RED;
   cout << "Value of Red: \t" << c << endl;          // 0
@@ -70,7 +70,7 @@ void enums() {
   Color3 c33 = (Color3)'a';
   (void)value, (void)c33;
 }
-void structs() {
+static void structs() {
   { // Structs and Enums inside structs
 
     struct A {
@@ -158,7 +158,7 @@ void structs() {
   }
 }
 
-void unions() {
+static void unions() {
   union A {
     int a;
     char b;
@@ -180,12 +180,12 @@ void unions() {
   // check type of variant
 }
 
-void produceError() {
+static void produceError() {
   assert(1 == 0);
   [[maybe_unused]] int arr[] = {1, 2, 3, 4, 5};
 }
 
-void controlFlow() {
+static void controlFlow() {
   // Short circuiting
   if (true || (produceError(), false)) {
     cout << "Short circuiting" << endl;
@@ -270,6 +270,10 @@ void ch4() {
   // structs();
   // unions();
   controlFlow();
+  declAndDef();
+  enums();
+  structs();
+  unions();
 
   // Templates
   cout << "Template" << endl;

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void polymorphism() {
+static void polymorphism() {
   // Runtime objects behave as one of derived class
   // Override: Cn be overridden in derived class
   // Overloading: static polymorphism (compile time)
@@ -85,7 +85,7 @@ void polymorphism() {
     // Abstract a; // Error: Cannot create object of abstract class
   }
 }
-void inheritanceAndRtti() {
+static void inheritanceAndRtti() {
   // Hierarchy: Base -> Derived1, Base -> Derived2
   /*
     Upcasting: Derived -> Base
@@ -114,7 +114,7 @@ void inheritanceAndRtti() {
     // dynamic_cast<T*>(x) will return nullptr if x is not of type T
   }
 }
-void operatorOverload() {
+static void operatorOverload() {
   struct Complex {
     float real, imag;
     Complex(float r, float i) : real(r), imag(i) {}
@@ -176,7 +176,7 @@ void operatorOverload() {
 
   //
 }
-void cppObjectLayout() {
+static void cppObjectLayout() {
   // Aggregate {}
   // Trivial class: supports memcpy
   // No user provided copy/move/default constructors or destructor
