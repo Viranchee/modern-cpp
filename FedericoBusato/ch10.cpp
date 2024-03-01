@@ -104,13 +104,13 @@ template <typename T> struct StructTemplate {
 };
 template <typename R> void someFunc() {
   using Type = typename StructTemplate<R>::type;
-  Type x;
+  [[maybe_unused]] Type x;
 }
 // Simplifying:
 template <typename T> using STType = typename StructTemplate<T>::type;
 template <typename T> void workOnType() {
   using Type = STType<T>;
-  Type x;
+  [[maybe_unused]] Type x;
 }
 
 template <typename T> struct THierarchy {
@@ -213,7 +213,7 @@ template <typename T> int factorial(T value) {
 }
 
 void templateMetaProgramming() {
-  constexpr int fact5 = Factorial<5>::value;
+  [[maybe_unused]] constexpr int fact5 = Factorial<5>::value;
   // Compile time feature
 }
 void sfinae() {
@@ -221,5 +221,24 @@ void sfinae() {
   // SFINAE: Substitution Failure Is Not An Error
   // Simply restrict the template instantiation
 }
-void variadicTemplates() {}
+
+// Variadic add example:
+
+// Base case
+template <typename T, typename R> auto add(T t, R r) { return t + r; }
+template <typename T, typename... TArgs> auto add(T a, TArgs... args) {
+  return a + add(args...);
+}
+
+void variadicTemplates() {
+  // Variadics should be last in the declaration.
+  // For total variadics, use sizeof...(args) operator
+  [[maybe_unused]] auto res = add(1.0f, 2, 3, 4, 5);
+
+  // Can use pass by value, ref and pointer
+
+  // Can fold
+
+  // Recursive data structures
+}
 void cpp20Concepts() {}
