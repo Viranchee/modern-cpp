@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void integers() {
+static void integers() {
   {
 
     // Model/Bits: ILP32: Windows/Unix 32-b
@@ -91,7 +91,7 @@ void integers() {
   }
 }
 
-void floats() {
+static void floats() {
   { // Floats
     /*
 
@@ -132,7 +132,7 @@ void floats() {
     */
   }
 }
-void floatIssues() {
+static void floatIssues() {
   FE_ALL_EXCEPT;
   feclearexcept(FE_ALL_EXCEPT);
   auto x = 1.0 / 0.0; // compiles

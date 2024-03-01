@@ -4,10 +4,10 @@
 
 using namespace std;
 
-void fnTemplate();
-void templateVariableParameterTypes();
-void compileTimeUtils();
-void typeTraits();
+static void fnTemplate();
+static void templateVariableParameterTypes();
+static void compileTimeUtils();
+static void typeTraits();
 
 // Generics: Templates and Metaprogramming
 void ch9() {

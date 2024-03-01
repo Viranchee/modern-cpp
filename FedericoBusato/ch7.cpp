@@ -2,10 +2,10 @@
 #include <iostream>
 using namespace std;
 
-void raii() {
+static void raii() {
   // Holding a resource is a class invariant, and is tied to object lifetime
 }
-void classes() {
+static void classes() {
   struct Struct {
     int x;
     void f() {} // Inline definition
@@ -15,7 +15,7 @@ void classes() {
     void f() {} // Function member, Out of line definition
   };
 }
-void hierarchyAndAccessSpecifiers() {
+static void hierarchyAndAccessSpecifiers() {
   // Derived class can extend Parent class
   class ParentClass {
   public:
@@ -50,7 +50,7 @@ void hierarchyAndAccessSpecifiers() {
 
   // Can Control public protected and private visibility to the user
 }
-void constructors() {
+static void constructors() {
   // Initialize all data members.
   // Multiple constructors with different signatures
   // Can be constexpr
@@ -178,7 +178,7 @@ void constructors() {
 
   // Call explicit constructor
 }
-void copyConstructors() {
+static void copyConstructors() {
   //
   struct AStruct {
     int x;
@@ -188,7 +188,7 @@ void copyConstructors() {
   };
   //
 }
-void destructor() {
+static void destructor() {
   // Releases resources
   // 1 Destructor.
   // C++20: constexpr allowed
@@ -227,9 +227,9 @@ struct TryStatic {
   static int f() { return x; };
   static int &g() { return x; };
 };
-void defaultedConstructursDestructursOperators() {}
+static void defaultedConstructursDestructursOperators() {}
 
-void keywords() {
+static void keywords() {
 
   // Const and Mutable
   {

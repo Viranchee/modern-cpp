@@ -4,17 +4,19 @@
 #include <type_traits>
 using namespace std;
 
-[[deprecated("PLEASE DO NOT USE")]] [[noreturn]] void throwingFunction(int x) {
+[[deprecated("PLEASE DO NOT USE")]] [[maybe_unused]] [[noreturn]] static void
+throwingFunction(int x) {
   // Throw exception, never return
   throw x;
 };
 
-int regularDouble(int x) { return x * 2; }
-[[nodiscard("Please use this return value")]] int noDiscardDouble(int x) {
+static int regularDouble(int x) { return x * 2; }
+[[nodiscard("Please use this return value")]] static int
+noDiscardDouble(int x) {
   return x * 2;
 }
 
-void functions() {
+static void functions() {
   /*
   Avoid code repetition
   Redability
@@ -57,7 +59,7 @@ void functions() {
   cout << x << endl;
 }
 
-void functionPointersAndObjects() {
+static void functionPointersAndObjects() {
   {
     /*
     Generic programming & composability through function pointer
@@ -84,7 +86,7 @@ void functionPointersAndObjects() {
     cout << fObj(100) << endl;
   }
 }
-void lambda() {
+static void lambda() {
   // Lambda
   // auto lambda = [capture clause] (parameters) {body}
   [[maybe_unused]] auto lambdaX2 = [](int x) { return x * 2; };
@@ -156,7 +158,7 @@ void lambda() {
   };
   //
 }
-void preprocessing() {
+static void preprocessing() {
   //
   // MACROs are EVIL. Do Not use Macro Expansion
   /*
@@ -232,21 +234,21 @@ void preprocessing() {
 // Token Pasting Operator
 
 #define FUNC_GEN_A(tA, tB)                                                     \
-  void tA##tB() {}
+  static void tA##tB() {}
 #define FUNC_GEN_B(tA, tB)                                                     \
-  void tA##_##tB() {}
+  static void tA##_##tB() {}
 
 FUNC_GEN_A(my, function);
 FUNC_GEN_B(my, function);
 
-void f(int) {}
-void f(int, int) {}
-void f(int, int, int) {}
-void f(int, int, int, int) {}
-void f(int, int, int, int, int) {}
+[[maybe_unused]] static void f(int) {}
+[[maybe_unused]] static void f(int, int) {}
+[[maybe_unused]] static void f(int, int, int) {}
+[[maybe_unused]] static void f(int, int, int, int) {}
+[[maybe_unused]] static void f(int, int, int, int, int) {}
 #define f(...) f(__VA_ARGS__)
 
-void preprocessing2() {
+static void preprocessing2() {
   myfunction();
   my_function();
 

@@ -8,10 +8,10 @@ using namespace std;
 // Data and BSS segment: Static/Global data
 // Larger than stack but slower
 
-int globalData[] = {1, 2}; // Data segment
-int globalBss[1'000'000];  // BSS segment
+[[maybe_unused]] static int globalData[] = {1, 2}; // Data segment
+[[maybe_unused]] static int globalBss[1'000'000];  // BSS segment
 
-void heapAndStack() {
+static void heapAndStack() {
   /*
    Stack segment: 1MB (Windows) or 8MB (Linux)
    if exceeded, hard crash
@@ -220,7 +220,7 @@ void heapAndStack() {
   }
 }
 
-void initialization() {
+static void initialization() {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
@@ -255,7 +255,7 @@ void initialization() {
   }
 #pragma GCC diagnostic pop
 }
-void pointerAndReference() {
+static void pointerAndReference() {
   {
     int *pointer;
     pointer = nullptr;
@@ -315,7 +315,7 @@ void pointerAndReference() {
     // Arguments
   }
 }
-void constantAndLiterals() {
+[[maybe_unused]] static void constantAndLiterals() {
   { // const
     // Literal, "literal", nullptr, user defined literals
 
@@ -407,7 +407,9 @@ void constantAndLiterals() {
      */
   }
 }
-void volatility() {
+
+// Segfaults
+[[maybe_unused]] static void volatility() {
   {
     /*
     Avoid aggressive memory optimizations involving a pointer or object
@@ -431,7 +433,7 @@ void volatility() {
     ptr[pos] = 10; // SEGFAULT
   }
 }
-void explicts() {
+static void explicts() {
   {
     const int a = 10;
     [[maybe_unused]] auto ptr = &a;
@@ -483,7 +485,7 @@ void explicts() {
     */
   }
 }
-void sizeOf() {
+static void sizeOf() {
   // Compile time operator. Size in bytes
 
   // returns size_t (unsigned max width int)
@@ -493,12 +495,13 @@ void sizeOf() {
 }
 // ch5.cpp
 void ch5() {
+
   cout << "Chapter 5: Memory" << endl;
-  // heapAndStack();
-  // initialization();
-  // pointerAndReference();
+  heapAndStack();
+  initialization();
+  pointerAndReference();
   // constantAndLiterals();
-  volatility();
+  // volatility();
   explicts();
   sizeOf();
 }

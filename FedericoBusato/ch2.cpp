@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <utility>
 
-void pointerToAPointer() {
+static void pointerToAPointer() {
   int *val = nullptr;
   auto size = sizeof(int);
   val = (int *)malloc(size);
@@ -23,7 +23,7 @@ void pointerToAPointer() {
   free(val);
 }
 
-void promotions() {
+static void promotions() {
   // Promotions
   uint8_t c = 'a';
   auto x = -c;
@@ -33,10 +33,10 @@ void promotions() {
   std::cout << "+x: " << +x << std::endl;
 }
 
-auto doubleValue(int x) { return x * 2; }                 // C++ 17
-void printAuto(auto x) { std::cout << (x) << std::endl; } // C++ 20
+static auto doubleValue(int x) { return x * 2; }                 // C++ 17
+static void printAuto(auto x) { std::cout << (x) << std::endl; } // C++ 20
 
-void implicitPromotion() {
+static void implicitPromotion() {
   // Implicit promotion
   char a = '0';
   std::cout << "a: " << a << std::endl;
@@ -45,22 +45,22 @@ void implicitPromotion() {
   std::cout << "a+a: " << (a + a) << std::endl;
 }
 
-int get100() {
+static int get100() {
   ;
   std::cout << "Extra operation, return 100" << std::endl;
   return 100;
 }
-void commaOperator() {
+static void commaOperator() {
   int i = (get100(), -100);
   std::cout << "Comma operator: " << i << std::endl;
 }
 
-void printSpaceshipResult(std::string str, std::strong_ordering cmp) {
+static void printSpaceshipResult(std::string str, std::strong_ordering cmp) {
   // Print boolean cmp > 0 <0 or ==0
   auto comparison = cmp == 0 ? "==" : (cmp > 0 ? ">" : "<");
   std::cout << str << " " << comparison << " 0" << std::endl;
 }
-void spaceshipOperator() {
+static void spaceshipOperator() {
   std::cout << "Spaceship operator:" << std::endl;
   auto cmp = 3 <=> 3;
   printSpaceshipResult("3 <=> 3", cmp);

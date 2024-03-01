@@ -4,12 +4,12 @@
 
 using namespace std;
 
-void classTemplate();
-void classTemplateAdvanced();
-void templateMetaProgramming();
-void sfinae();
-void variadicTemplates();
-void cpp20Concepts();
+static void classTemplate();
+static void classTemplateAdvanced();
+static void templateMetaProgramming();
+static void sfinae();
+static void variadicTemplates();
+static void cpp20Concepts();
 
 void ch10() {
   cout << "Templates & Meta programming 2" << endl;
@@ -51,7 +51,7 @@ template <typename T, typename R> struct Compare : std::false_type {};
 template <typename T, typename R>
 struct Compare<A<T>, A<R>> : std::true_type {};
 
-void classTemplate() {
+static void classTemplate() {
   //
 }
 
@@ -152,7 +152,7 @@ template <template <typename> typename A> struct TTemplateParameters {
   };
 };
 
-void classTemplateAdvanced() {
+static void classTemplateAdvanced() {
   customstr.myFunc();        // Works
   makeMyString("Some word"); // Works
   //  Alias x{3};
@@ -291,7 +291,7 @@ auto addUsingRequires(T a, T b)
   return a + b;
 }
 
-void cpp20Concepts() {
+static void cpp20Concepts() {
   // Extension for templates.
 
   // Concepts are a way to restrict the template instantiation
