@@ -1,3 +1,4 @@
+#include <csetjmp>
 #include <iostream>
 #include <string>
 
@@ -195,7 +196,30 @@ void classTemplateAdvanced() {
   { // Template Template parameters
   }
 }
-void templateMetaProgramming() {}
-void sfinae() {}
+
+// Factorial at compile time (and at runtime)
+template <int N> struct Factorial {
+  static constexpr int value = N * Factorial<N - 1>::value;
+};
+template <> struct Factorial<0> {
+  static constexpr int value = 1;
+};
+
+template <typename T> int factorial(T value) {
+  T tmp = 1;
+  for (int i = 1; i <= value; i++)
+    tmp *= i;
+  return tmp;
+}
+
+void templateMetaProgramming() {
+  constexpr int fact5 = Factorial<5>::value;
+  // Compile time feature
+}
+void sfinae() {
+  // SOME MESS I AM NOT GOING INTO
+  // SFINAE: Substitution Failure Is Not An Error
+  // Simply restrict the template instantiation
+}
 void variadicTemplates() {}
 void cpp20Concepts() {}
