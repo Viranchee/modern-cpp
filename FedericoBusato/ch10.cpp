@@ -136,9 +136,19 @@ class C {
   template <typename> friend struct TSingleType; // match all A templates
   template <typename, typename>
   friend struct TMultiTypes; // match all A templates
+public:
+  int x;
 
   // template <typename T, int> friend struct TMultiTypes<int, T>;
   // partial specialization cannot be declared as a friend
+};
+
+template <typename T> struct TTemplateParameter;
+template <template <typename> typename A> struct TTemplateParameters {
+  struct X {
+    A<int> intt;
+    A<float> flt;
+  };
 };
 
 void classTemplateAdvanced() {
@@ -181,6 +191,8 @@ void classTemplateAdvanced() {
   }
 
   { // Friend and Templates
+  }
+  { // Template Template parameters
   }
 }
 void templateMetaProgramming() {}
