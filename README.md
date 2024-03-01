@@ -22,3 +22,10 @@ abbr -a -g gce 'git commit --allow-empty-message -m " "'
     - This is super fast compared to the browser, and keeps me productive
 
 
+### Things I did not learn thoroughly:
+
+- Template Deduction Guide
+- Template Template Arguments
+- SFINAE
+- Function Arity at compile time
+

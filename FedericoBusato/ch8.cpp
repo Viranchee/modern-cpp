@@ -206,8 +206,8 @@ void cppObjectLayout() {
   };
 
   class StdLayout2 {
-    int x, y;
-    StdLayout1 z;
+    [[maybe_unused]] int x, y;
+    [[maybe_unused]] int z;
   };
 
   struct StdLayout3 {};
