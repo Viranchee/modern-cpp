@@ -230,6 +230,21 @@ template <typename T, typename... TArgs> auto add(T a, TArgs... args) {
   return a + add(args...);
 }
 
+template <typename T> struct GetArity;
+// generic function pointer
+template <typename R, typename... Args> struct GetArity<R (*)(Args...)> {
+  static constexpr int value = sizeof...(Args);
+};
+// generic function reference
+template <typename R, typename... Args> struct GetArity<R (&)(Args...)> {
+  static constexpr int value = sizeof...(Args);
+};
+// generic function object
+template <typename R, typename... Args> struct GetArity<R(Args...)> {
+  static constexpr int value = sizeof...(Args);
+};
+
+void threeParamFunction(int, char, double) {}
 void variadicTemplates() {
   // Variadics should be last in the declaration.
   // For total variadics, use sizeof...(args) operator
@@ -240,5 +255,13 @@ void variadicTemplates() {
   // Can fold
 
   // Recursive data structures
+
+  // Arity
+  static_assert(GetArity<decltype(threeParamFunction)>::value == 3);
+  auto &ref = threeParamFunction;
+  static_assert(GetArity<decltype(ref)>::value == 3);
+  auto *ptr = threeParamFunction;
+  static_assert(GetArity<decltype(ptr)>::value == 3);
+  static_assert(GetArity<decltype(add<int, float, double>)>::value == 3);
 }
 void cpp20Concepts() {}
