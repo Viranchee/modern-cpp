@@ -264,4 +264,53 @@ void variadicTemplates() {
   static_assert(GetArity<decltype(ptr)>::value == 3);
   static_assert(GetArity<decltype(add<int, float, double>)>::value == 3);
 }
-void cpp20Concepts() {}
+
+// Add only int types using cpp 20 concepts
+template <typename T>
+concept Arithmetic = std::is_arithmetic_v<T>;
+
+template <Arithmetic T> T addUsingConcept(T a, T b) { return a + b; }
+
+template <Arithmetic T>
+auto addUsingAutoConcept(Arithmetic auto a, Arithmetic auto b) {
+  return a + b;
+}
+
+// After template
+template <typename T>
+  requires Arithmetic<T>
+auto addUsingRequires(T a, T b) {
+  return a + b;
+}
+
+// After function declaration
+template <typename T>
+auto addUsingRequires(T a, T b)
+  requires(sizeof(T) == 4)
+{
+  return a + b;
+}
+
+void cpp20Concepts() {
+  // Extension for templates.
+
+  // Concepts are a way to restrict the template instantiation
+  // Better than SFINAE
+
+  // Easy R/W and understand
+  // Clear compile time messages for debugging
+  // Fast compile time
+
+  // Keywords: requires, concept, requires clause
+  //
+
+  // requires: Acts like SFINAE
+
+  // Multiple concepts and requirements,
+  // multiple can be joined using '&&' or '||'
+  // C & R Can be used together
+
+  // Similar to where clause in Swift
+
+  // Nested requires
+}
