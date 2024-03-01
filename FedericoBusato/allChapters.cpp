@@ -31,8 +31,8 @@ void runFedericoChapters() {
   // ch5();
   // ch6();
   // ch7();
-  ch8();
-  // ch9();
+  // ch8();
+  ch9();
   // ch10();
   // ch11();
   // ch12();
