@@ -76,5 +76,5 @@ void CH11::oneDefClassTemplate() {
   //
 }
 void CH11::oneDefBehaviorSummary() {
-  //
+  // Use flag -detect-odr-violations
 }
