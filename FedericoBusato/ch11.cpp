@@ -1,33 +1,33 @@
-#include "ch11.hpp"
 #include <iostream>
 
 using namespace std;
 
-static void translationUnitsConcepts();
-static void storageClassDuration();
-static void linkageConstExprVariables();
-static void linkageSummary();
-static void multipleTranslationUnits();
-static void oneDefRule();
-static void oneDefFunctionTemplate();
-static void oneDefClassTemplate();
-static void oneDefBehaviorSummary();
+namespace CH11 {
 
+void translationUnitsConcepts();
+void storageClassDuration();
+void linkageConstExprVariables();
+void linkageSummary();
+void multipleTranslationUnits();
+void oneDefRule();
+void oneDefFunctionTemplate();
+void oneDefClassTemplate();
+void oneDefBehaviorSummary();
+} // namespace CH11
 void ch11() {
   cout << "Chapter 11: Trnslation Units 1" << endl;
-  translationUnitsConcepts();
-  storageClassDuration();
-  linkageConstExprVariables();
-  linkageSummary();
-  multipleTranslationUnits();
-  oneDefRule();
-  oneDefFunctionTemplate();
-  oneDefClassTemplate();
-  oneDefBehaviorSummary();
+  CH11::translationUnitsConcepts();
+  CH11::storageClassDuration();
+  CH11::linkageConstExprVariables();
+  CH11::linkageSummary();
+  CH11::multipleTranslationUnits();
+  CH11::oneDefRule();
+  CH11::oneDefFunctionTemplate();
+  CH11::oneDefClassTemplate();
+  CH11::oneDefBehaviorSummary();
 }
-// https://www.linkedin.com/jobs/view/3835349064
 
-static void translationUnitsConcepts() {
+void CH11::translationUnitsConcepts() {
   /*
   Header: Interfaces
   Source: Implementation
@@ -41,7 +41,7 @@ static void translationUnitsConcepts() {
   */
   //
 }
-static void storageClassDuration() {
+void CH11::storageClassDuration() {
   /*
   Auto: block start & end
   Static: Program start & end
@@ -56,31 +56,25 @@ static void storageClassDuration() {
   External Linkage
   */
 }
+void CH11::linkageConstExprVariables() {
+  //
+}
 
-namespace CH11 {
-void lol() { cout << "lol" << endl; }
-} // namespace CH11
-
-static void linkageConstExprVariables() {
-  CH11::lol();
-
+void CH11::linkageSummary() {
   //
 }
-static void linkageSummary() {
+void CH11::multipleTranslationUnits() {
   //
 }
-static void multipleTranslationUnits() {
+void CH11::oneDefRule() {
   //
 }
-static void oneDefRule() {
+void CH11::oneDefFunctionTemplate() {
   //
 }
-static void oneDefFunctionTemplate() {
+void CH11::oneDefClassTemplate() {
   //
 }
-static void oneDefClassTemplate() {
-  //
-}
-static void oneDefBehaviorSummary() {
+void CH11::oneDefBehaviorSummary() {
   //
 }
