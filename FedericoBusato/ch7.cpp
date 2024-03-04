@@ -1,11 +1,12 @@
-#include <cmath>
 #include <iostream>
 using namespace std;
 
-static void raii() {
+namespace CH7 {
+
+void raii() {
   // Holding a resource is a class invariant, and is tied to object lifetime
 }
-static void classes() {
+void classes() {
   struct Struct {
     int x;
     void f() {} // Inline definition
@@ -15,7 +16,7 @@ static void classes() {
     void f() {} // Function member, Out of line definition
   };
 }
-static void hierarchyAndAccessSpecifiers() {
+void hierarchyAndAccessSpecifiers() {
   // Derived class can extend Parent class
   class ParentClass {
   public:
@@ -50,7 +51,7 @@ static void hierarchyAndAccessSpecifiers() {
 
   // Can Control public protected and private visibility to the user
 }
-static void constructors() {
+void constructors() {
   // Initialize all data members.
   // Multiple constructors with different signatures
   // Can be constexpr
@@ -178,7 +179,7 @@ static void constructors() {
 
   // Call explicit constructor
 }
-static void copyConstructors() {
+void copyConstructors() {
   //
   struct AStruct {
     int x;
@@ -188,7 +189,7 @@ static void copyConstructors() {
   };
   //
 }
-static void destructor() {
+void destructor() {
   // Releases resources
   // 1 Destructor.
   // C++20: constexpr allowed
@@ -227,9 +228,9 @@ struct TryStatic {
   static int f() { return x; };
   static int &g() { return x; };
 };
-static void defaultedConstructursDestructursOperators() {}
+void defaultedConstructursDestructursOperators() {}
 
-static void keywords() {
+void keywords() {
 
   // Const and Mutable
   {
@@ -283,17 +284,17 @@ struct B {
 };
 
 // Delete keyword
-
+} // namespace CH7
 void ch7() {
   cout << "Chapter 7: Object Oriented Programming" << endl;
-  raii();
-  classes();
-  hierarchyAndAccessSpecifiers();
-  constructors();
-  copyConstructors();
-  destructor();
-  defaultedConstructursDestructursOperators();
-  keywords();
+  CH7::raii();
+  CH7::classes();
+  CH7::hierarchyAndAccessSpecifiers();
+  CH7::constructors();
+  CH7::copyConstructors();
+  CH7::destructor();
+  CH7::defaultedConstructursDestructursOperators();
+  CH7::keywords();
   //
-  A(42);
+  CH7::A(42);
 }

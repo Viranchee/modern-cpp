@@ -1,24 +1,24 @@
-#include <csetjmp>
 #include <iostream>
 #include <string>
 
 using namespace std;
+namespace CH10 {
 
-static void classTemplate();
-static void classTemplateAdvanced();
-static void templateMetaProgramming();
-static void sfinae();
-static void variadicTemplates();
-static void cpp20Concepts();
-
+void classTemplate();
+void classTemplateAdvanced();
+void templateMetaProgramming();
+void sfinae();
+void variadicTemplates();
+void cpp20Concepts();
+} // namespace CH10
 void ch10() {
   cout << "Templates & Meta programming 2" << endl;
-  classTemplate();
-  classTemplateAdvanced();
-  templateMetaProgramming();
-  sfinae();
-  variadicTemplates();
-  cpp20Concepts();
+  CH10::classTemplate();
+  CH10::classTemplateAdvanced();
+  CH10::templateMetaProgramming();
+  CH10::sfinae();
+  CH10::variadicTemplates();
+  CH10::cpp20Concepts();
 }
 
 template <typename T> struct typenameTemplate {
@@ -51,7 +51,7 @@ template <typename T, typename R> struct Compare : std::false_type {};
 template <typename T, typename R>
 struct Compare<A<T>, A<R>> : std::true_type {};
 
-static void classTemplate() {
+void CH10::classTemplate() {
   //
 }
 
@@ -152,7 +152,7 @@ template <template <typename> typename A> struct TTemplateParameters {
   };
 };
 
-static void classTemplateAdvanced() {
+void CH10::classTemplateAdvanced() {
   customstr.myFunc();        // Works
   makeMyString("Some word"); // Works
   //  Alias x{3};
@@ -212,11 +212,11 @@ template <typename T> int factorial(T value) {
   return tmp;
 }
 
-void templateMetaProgramming() {
+void CH10::templateMetaProgramming() {
   [[maybe_unused]] constexpr int fact5 = Factorial<5>::value;
   // Compile time feature
 }
-void sfinae() {
+void CH10::sfinae() {
   // SOME MESS I AM NOT GOING INTO
   // SFINAE: Substitution Failure Is Not An Error
   // Simply restrict the template instantiation
@@ -245,7 +245,7 @@ template <typename R, typename... Args> struct GetArity<R(Args...)> {
 };
 
 void threeParamFunction(int, char, double) {}
-void variadicTemplates() {
+void CH10::variadicTemplates() {
   // Variadics should be last in the declaration.
   // For total variadics, use sizeof...(args) operator
   [[maybe_unused]] auto res = add(1.0f, 2, 3, 4, 5);
@@ -291,7 +291,7 @@ auto addUsingRequires(T a, T b)
   return a + b;
 }
 
-static void cpp20Concepts() {
+void CH10::cpp20Concepts() {
   // Extension for templates.
 
   // Concepts are a way to restrict the template instantiation

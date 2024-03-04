@@ -1,11 +1,11 @@
 #import <iostream>
 #include <ostream>
 #include <type_traits>
-#include <vector>
 
 using namespace std;
+namespace CH8 {
 
-static void polymorphism() {
+void polymorphism() {
   // Runtime objects behave as one of derived class
   // Override: Cn be overridden in derived class
   // Overloading: static polymorphism (compile time)
@@ -85,7 +85,7 @@ static void polymorphism() {
     // Abstract a; // Error: Cannot create object of abstract class
   }
 }
-static void inheritanceAndRtti() {
+void inheritanceAndRtti() {
   // Hierarchy: Base -> Derived1, Base -> Derived2
   /*
     Upcasting: Derived -> Base
@@ -114,7 +114,7 @@ static void inheritanceAndRtti() {
     // dynamic_cast<T*>(x) will return nullptr if x is not of type T
   }
 }
-static void operatorOverload() {
+void operatorOverload() {
   struct Complex {
     float real, imag;
     Complex(float r, float i) : real(r), imag(i) {}
@@ -176,7 +176,7 @@ static void operatorOverload() {
 
   //
 }
-static void cppObjectLayout() {
+void cppObjectLayout() {
   // Aggregate {}
   // Trivial class: supports memcpy
   // No user provided copy/move/default constructors or destructor
@@ -220,11 +220,13 @@ static void cppObjectLayout() {
   stdLayout = std::is_trivially_copyable<StdLayout3>::value;
   cout << "Trivially copyable stdlayout3: " << stdLayout << endl;
 }
+} // namespace CH8
 
 void ch8() {
+
   //
-  polymorphism();
-  inheritanceAndRtti();
-  operatorOverload();
-  cppObjectLayout();
+  CH8::polymorphism();
+  CH8::inheritanceAndRtti();
+  CH8::operatorOverload();
+  CH8::cppObjectLayout();
 }
