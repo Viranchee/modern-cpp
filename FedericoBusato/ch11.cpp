@@ -1,5 +1,5 @@
+#include "ch11.hpp"
 #include <iostream>
-#include <string>
 
 using namespace std;
 
@@ -56,7 +56,14 @@ static void storageClassDuration() {
   External Linkage
   */
 }
+
+namespace CH11 {
+void lol() { cout << "lol" << endl; }
+} // namespace CH11
+
 static void linkageConstExprVariables() {
+  CH11::lol();
+
   //
 }
 static void linkageSummary() {
