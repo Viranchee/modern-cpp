@@ -4,14 +4,15 @@
 #include <sys/_types/_u_int8_t.h>
 
 using namespace std;
+namespace CH5 {
 
 // Data and BSS segment: Static/Global data
 // Larger than stack but slower
 
-[[maybe_unused]] static int globalData[] = {1, 2}; // Data segment
-[[maybe_unused]] static int globalBss[1'000'000];  // BSS segment
+[[maybe_unused]] int globalData[] = {1, 2}; // Data segment
+[[maybe_unused]] int globalBss[1'000'000];  // BSS segment
 
-static void heapAndStack() {
+void heapAndStack() {
   /*
    Stack segment: 1MB (Windows) or 8MB (Linux)
    if exceeded, hard crash
@@ -220,7 +221,7 @@ static void heapAndStack() {
   }
 }
 
-static void initialization() {
+void initialization() {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
@@ -255,7 +256,7 @@ static void initialization() {
   }
 #pragma GCC diagnostic pop
 }
-static void pointerAndReference() {
+void pointerAndReference() {
   {
     int *pointer;
     pointer = nullptr;
@@ -315,7 +316,7 @@ static void pointerAndReference() {
     // Arguments
   }
 }
-[[maybe_unused]] static void constantAndLiterals() {
+[[maybe_unused]] void constantAndLiterals() {
   { // const
     // Literal, "literal", nullptr, user defined literals
 
@@ -409,7 +410,7 @@ static void pointerAndReference() {
 }
 
 // Segfaults
-[[maybe_unused]] static void volatility() {
+[[maybe_unused]] void volatility() {
   {
     /*
     Avoid aggressive memory optimizations involving a pointer or object
@@ -433,7 +434,7 @@ static void pointerAndReference() {
     ptr[pos] = 10; // SEGFAULT
   }
 }
-static void explicts() {
+void explicts() {
   {
     const int a = 10;
     [[maybe_unused]] auto ptr = &a;
@@ -485,7 +486,7 @@ static void explicts() {
     */
   }
 }
-static void sizeOf() {
+void sizeOf() {
   // Compile time operator. Size in bytes
 
   // returns size_t (unsigned max width int)
@@ -493,15 +494,17 @@ static void sizeOf() {
   // 1 for empty struct
   // Takes Padding into account
 }
+} // namespace CH5
+
 // ch5.cpp
 void ch5() {
 
   cout << "Chapter 5: Memory" << endl;
-  heapAndStack();
-  initialization();
-  pointerAndReference();
+  CH5::heapAndStack();
+  CH5::initialization();
+  CH5::pointerAndReference();
   // constantAndLiterals();
   // volatility();
-  explicts();
-  sizeOf();
+  CH5::explicts();
+  CH5::sizeOf();
 }

@@ -7,8 +7,8 @@
 #include <sys/types.h>
 
 using namespace std;
-
-static void integers() {
+namespace CH3 {
+void integers() {
   {
 
     // Model/Bits: ILP32: Windows/Unix 32-b
@@ -91,7 +91,7 @@ static void integers() {
   }
 }
 
-static void floats() {
+void floats() {
   { // Floats
     /*
 
@@ -132,7 +132,7 @@ static void floats() {
     */
   }
 }
-static void floatIssues() {
+void floatIssues() {
   FE_ALL_EXCEPT;
   feclearexcept(FE_ALL_EXCEPT);
   auto x = 1.0 / 0.0; // compiles
@@ -157,11 +157,11 @@ static void floatIssues() {
   // Switch to log scale: Multiplication becomes addition
   // Compensation algo: Kahan summation, Dekker's fast two sum, Rump's acc sum
 }
-
+} // namespace CH3
 // ch3.cpp
 void ch3() {
   std::cout << "Chapter 3: Basic Concepts 2" << std::endl;
-  integers();
-  floats();
-  floatIssues();
+  CH3::integers();
+  CH3::floats();
+  CH3::floatIssues();
 }

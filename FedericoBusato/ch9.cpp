@@ -3,20 +3,22 @@
 #include <type_traits>
 
 using namespace std;
+namespace CH9 {
 
-static void fnTemplate();
-static void templateVariableParameterTypes();
-static void compileTimeUtils();
-static void typeTraits();
-
+void fnTemplate();
+void templateVariableParameterTypes();
+void compileTimeUtils();
+void typeTraits();
+} // namespace CH9
 // Generics: Templates and Metaprogramming
 void ch9() {
-  fnTemplate();
-  templateVariableParameterTypes();
-  compileTimeUtils();
-  typeTraits();
+  CH9::fnTemplate();
+  CH9::templateVariableParameterTypes();
+  CH9::compileTimeUtils();
+  CH9::typeTraits();
 }
-void fnTemplate() {
+
+void CH9::fnTemplate() {
   // Pros:
   // Functions, Classes, Variables
   // Generic programming & Performance
@@ -42,7 +44,7 @@ void aTemplateUser() {
 template void aTemplateFn(
     int); // generates f(int) -> Explicit; useful for reducing binary size
 
-void templateVariableParameterTypes() {
+void CH9::templateVariableParameterTypes() {
   // template parameter: generic type or NTTP (eg. int, enum, etc.)
 }
 
@@ -97,9 +99,9 @@ using adder2 = void (*)(int, int); // Function pointer
 template <typename T, int Size> struct VECTOR {};
 template <int Size> using Bitset = VECTOR<bool, Size>; // partial specialization
 using IntV4 = VECTOR<int, 4>;                          // full specialization
-using fn = decltype(compileTimeUtils);
+using fn = decltype(CH9::compileTimeUtils);
 
-void compileTimeUtils() {
+void CH9::compileTimeUtils() {
   _callCircularArea();
 
   static_assert(2 + 2 == 4, "2+2 != 4"); // Compile time assert
@@ -110,7 +112,7 @@ void compileTimeUtils() {
   decltype(a) d1 = 5;
   [[maybe_unused]] decltype((a)) d2 = d1; // Should be int&
 }
-void typeTraits() {
+void CH9::typeTraits() {
 
   // Introspection: inspect & query type & properties
   // Reflection: examine, introspect, modify it's own structure & behavior

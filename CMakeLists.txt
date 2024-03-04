@@ -5,6 +5,9 @@ project("modern-cpp")
 set(CMAKE_C_COMPILER /opt/homebrew/opt/llvm/bin/clang)
 set(CMAKE_CXX_COMPILER /opt/homebrew/opt/llvm/bin/clang++)
 
+# add_compile_optionsmake(-fmodules-ts -x c++-system-header iostream)
+
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 23 CACHE STRING "C++ standard to conform to")
 

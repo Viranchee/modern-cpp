@@ -4,6 +4,7 @@
 #include <variant>
 
 using namespace std;
+namespace CH4 {
 
 void entities() {
   // Entity: value, object, ref, fn, enum, type, class member, template,
@@ -11,16 +12,16 @@ void entities() {
 }
 
 // 2 Declarations
-static void declAndDef();
-static void declAndDef();
+void declAndDef();
+void declAndDef();
 
 // Definition
-static void declAndDef() {
+void declAndDef() {
   // 1 definition, multiple declarations
   // eg. Function declaration and definition
   // Declaration's comments prioritized over definition's comments
 }
-static void enums() {
+void enums() {
   enum Color { RED, GREEN, BLUE };
   Color c = RED;
   cout << "Value of Red: \t" << c << endl;          // 0
@@ -70,7 +71,7 @@ static void enums() {
   Color3 c33 = (Color3)'a';
   (void)value, (void)c33;
 }
-static void structs() {
+void structs() {
   { // Structs and Enums inside structs
 
     struct A {
@@ -158,7 +159,7 @@ static void structs() {
   }
 }
 
-static void unions() {
+void unions() {
   union A {
     int a;
     char b;
@@ -180,12 +181,12 @@ static void unions() {
   // check type of variant
 }
 
-static void produceError() {
+void produceError() {
   assert(1 == 0);
   [[maybe_unused]] int arr[] = {1, 2, 3, 4, 5};
 }
 
-static void controlFlow() {
+void controlFlow() {
   // Short circuiting
   if (true || (produceError(), false)) {
     cout << "Short circuiting" << endl;
@@ -259,7 +260,7 @@ template <typename T> int template2DeclType(T value) {
   using R = decltype(value);
   return R{};
 }
-
+} // namespace CH4
 // This comment is from ch4.cpp
 void ch4() {
   cout << "Chapter 4: Basic Concepts 3" << endl;
@@ -269,26 +270,26 @@ void ch4() {
   // enums();
   // structs();
   // unions();
-  controlFlow();
-  declAndDef();
-  enums();
-  structs();
-  unions();
+  CH4::controlFlow();
+  CH4::declAndDef();
+  CH4::enums();
+  CH4::structs();
+  CH4::unions();
 
   // Templates
   cout << "Template" << endl;
-  cout << "sizeOf(Int)\t" << template1SizeOfT(1) << endl;
-  cout << "sizeOf(Float)\t" << template1SizeOfT(1.0f) << endl;
+  cout << "sizeOf(Int)\t" << CH4::template1SizeOfT(1) << endl;
+  cout << "sizeOf(Float)\t" << CH4::template1SizeOfT(1.0f) << endl;
   struct {
     int x;
     float y;
     std::string z;
   } a;
-  cout << "sizeOf(UnnamedStruct)\t" << template1SizeOfT(a) << endl;
+  cout << "sizeOf(UnnamedStruct)\t" << CH4::template1SizeOfT(a) << endl;
 
   // Decltype
   cout << "Decltype" << endl;
-  cout << "Decltype(Int)\t" << template2DeclType(1) << endl;
-  cout << "Decltype(Float)\t" << template2DeclType(1.0f) << endl;
+  cout << "Decltype(Int)\t" << CH4::template2DeclType(1) << endl;
+  cout << "Decltype(Float)\t" << CH4::template2DeclType(1.0f) << endl;
   // cout << "Decltype(UnnamedStruct)" << template2DeclType(a) << endl; // ERROR
 }

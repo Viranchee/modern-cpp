@@ -3,11 +3,12 @@
 #include <cstdint>
 #include <cstdio>
 #include <iostream>
-#include <iterator>
 #include <stdio.h>
 #include <utility>
 
-static void pointerToAPointer() {
+namespace CH2 {
+
+void pointerToAPointer() {
   int *val = nullptr;
   auto size = sizeof(int);
   val = (int *)malloc(size);
@@ -23,7 +24,7 @@ static void pointerToAPointer() {
   free(val);
 }
 
-static void promotions() {
+void promotions() {
   // Promotions
   uint8_t c = 'a';
   auto x = -c;
@@ -33,10 +34,10 @@ static void promotions() {
   std::cout << "+x: " << +x << std::endl;
 }
 
-static auto doubleValue(int x) { return x * 2; }                 // C++ 17
-static void printAuto(auto x) { std::cout << (x) << std::endl; } // C++ 20
+auto doubleValue(int x) { return x * 2; }                 // C++ 17
+void printAuto(auto x) { std::cout << (x) << std::endl; } // C++ 20
 
-static void implicitPromotion() {
+void implicitPromotion() {
   // Implicit promotion
   char a = '0';
   std::cout << "a: " << a << std::endl;
@@ -45,22 +46,22 @@ static void implicitPromotion() {
   std::cout << "a+a: " << (a + a) << std::endl;
 }
 
-static int get100() {
+int get100() {
   ;
   std::cout << "Extra operation, return 100" << std::endl;
   return 100;
 }
-static void commaOperator() {
+void commaOperator() {
   int i = (get100(), -100);
   std::cout << "Comma operator: " << i << std::endl;
 }
 
-static void printSpaceshipResult(std::string str, std::strong_ordering cmp) {
+void printSpaceshipResult(std::string str, std::strong_ordering cmp) {
   // Print boolean cmp > 0 <0 or ==0
   auto comparison = cmp == 0 ? "==" : (cmp > 0 ? ">" : "<");
   std::cout << str << " " << comparison << " 0" << std::endl;
 }
-static void spaceshipOperator() {
+void spaceshipOperator() {
   std::cout << "Spaceship operator:" << std::endl;
   auto cmp = 3 <=> 3;
   printSpaceshipResult("3 <=> 3", cmp);
@@ -71,21 +72,22 @@ static void spaceshipOperator() {
   cmp = 'z' <=> 'a';
   printSpaceshipResult("z <=> a", cmp);
 }
+} // namespace CH2
 
 void ch2() {
   std::cout << "Chapter 2: Basic Concepts 1" << std::endl;
-  pointerToAPointer();
-  promotions();
-  implicitPromotion();
+  CH2::pointerToAPointer();
+  CH2::promotions();
+  CH2::implicitPromotion();
 
   // auto
-  std::cout << "DOuble of 5: " << doubleValue(5) << std::endl;
-  printAuto("Hello");
-  printAuto(40.33);
-  printAuto(false);
+  std::cout << "DOuble of 5: " << CH2::doubleValue(5) << std::endl;
+  CH2::printAuto("Hello");
+  CH2::printAuto(40.33);
+  CH2::printAuto(false);
 
-  commaOperator();
-  spaceshipOperator();
+  CH2::commaOperator();
+  CH2::spaceshipOperator();
 
   // C++20 comparison
   std::cout << "U8 == S64:\t" << std::cmp_equal((uint8_t)8, (int64_t)8)

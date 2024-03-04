@@ -2,21 +2,22 @@
 #include <ostream>
 #include <source_location>
 #include <type_traits>
-using namespace std;
 
-[[deprecated("PLEASE DO NOT USE")]] [[maybe_unused]] [[noreturn]] static void
+using namespace std;
+namespace CH6 {
+
+[[deprecated("PLEASE DO NOT USE")]] [[maybe_unused]] [[noreturn]] void
 throwingFunction(int x) {
   // Throw exception, never return
   throw x;
 };
 
-static int regularDouble(int x) { return x * 2; }
-[[nodiscard("Please use this return value")]] static int
-noDiscardDouble(int x) {
+int regularDouble(int x) { return x * 2; }
+[[nodiscard("Please use this return value")]] int noDiscardDouble(int x) {
   return x * 2;
 }
 
-static void functions() {
+void functions() {
   /*
   Avoid code repetition
   Redability
@@ -59,7 +60,7 @@ static void functions() {
   cout << x << endl;
 }
 
-static void functionPointersAndObjects() {
+void functionPointersAndObjects() {
   {
     /*
     Generic programming & composability through function pointer
@@ -86,7 +87,7 @@ static void functionPointersAndObjects() {
     cout << fObj(100) << endl;
   }
 }
-static void lambda() {
+void lambda() {
   // Lambda
   // auto lambda = [capture clause] (parameters) {body}
   [[maybe_unused]] auto lambdaX2 = [](int x) { return x * 2; };
@@ -158,7 +159,7 @@ static void lambda() {
   };
   //
 }
-static void preprocessing() {
+void preprocessing() {
   //
   // MACROs are EVIL. Do Not use Macro Expansion
   /*
@@ -234,21 +235,21 @@ static void preprocessing() {
 // Token Pasting Operator
 
 #define FUNC_GEN_A(tA, tB)                                                     \
-  static void tA##tB() {}
+  void tA##tB() {}
 #define FUNC_GEN_B(tA, tB)                                                     \
-  static void tA##_##tB() {}
+  void tA##_##tB() {}
 
 FUNC_GEN_A(my, function);
 FUNC_GEN_B(my, function);
 
-[[maybe_unused]] static void f(int) {}
-[[maybe_unused]] static void f(int, int) {}
-[[maybe_unused]] static void f(int, int, int) {}
-[[maybe_unused]] static void f(int, int, int, int) {}
-[[maybe_unused]] static void f(int, int, int, int, int) {}
+[[maybe_unused]] void f(int) {}
+[[maybe_unused]] void f(int, int) {}
+[[maybe_unused]] void f(int, int, int) {}
+[[maybe_unused]] void f(int, int, int, int) {}
+[[maybe_unused]] void f(int, int, int, int, int) {}
 #define f(...) f(__VA_ARGS__)
 
-static void preprocessing2() {
+void preprocessing2() {
   myfunction();
   my_function();
 
@@ -263,11 +264,11 @@ static void preprocessing2() {
   auto lol = TO_LITERA(123);
   cout << "Char123: " << lol << endl;
 }
-
+} // namespace CH6
 void ch6() {
-  functions();
-  functionPointersAndObjects();
-  lambda();
-  preprocessing();
-  preprocessing2();
+  CH6::functions();
+  CH6::functionPointersAndObjects();
+  CH6::lambda();
+  CH6::preprocessing();
+  CH6::preprocessing2();
 }
