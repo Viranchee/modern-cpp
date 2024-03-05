@@ -233,6 +233,7 @@ void readabilityAndFormatting() {
   Line length: 80
   tab: 4 spaces
 
+
   */
 }
 void codeDoc() {
