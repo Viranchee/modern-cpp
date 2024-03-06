@@ -90,9 +90,10 @@ void customIterator() {
   for (const auto &it : list)
     cout << it << " ";
 }
-void iteratorUtility() {
+inline void iteratorUtility() {
   //
   // std::min_element()
+  __builtin_popcount(0);
 }
 void algorithmsLibrary() {
   //
