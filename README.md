@@ -1,6 +1,6 @@
 # Modern CPP Programming
 
-Following through Federico Busato's C++ course ( 22 chapter ) for intermediate C++ programmers.
+1. Following through [Federico Busato's C++ course](https://github.com/federico-busato/Modern-CPP-Programming) ( 22 chapter ) for intermediate C++ programmers. 
 
 Allowed to add more C++ sources, if, in future, I decide to invest in another Book.
 
