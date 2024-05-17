@@ -123,16 +123,16 @@ void lambda() {
   cout << "Lambda chaining: 2*3+4 = " << multiplyThenAdd(2, 3, 4) << endl;
 
   // Lambda can be ConstEval and ConstExpr
-  auto doublerConstEval = [](int x) consteval { return x * 2; };
-  auto halverConstExpr = [](int x) constexpr { return x / 2; };
-  cout << "ConstExprEval: " << doublerConstEval(halverConstExpr(3)) << endl;
+  // auto doublerConstEval = [](int x) consteval { return x * 2; };
+  // auto halverConstExpr = [](int x) constexpr { return x / 2; };
+  // cout << "ConstExprEval: " << doublerConstEval(halverConstExpr(3)) << endl;
 
   // Templates
-  auto doubleTemplate = []<typename T>
-    requires std::is_arithmetic_v<T>
-  (T val) { return val * 2; };
+  // auto doubleTemplate = []<typename T>
+  //   requires std::is_arithmetic_v<T>
+  // (T val) { return val * 2; };
 
-  cout << "TemplateLambda: " << doubleTemplate(3) << endl;
+  // cout << "TemplateLambda: " << doubleTemplate(3) << endl;
   struct Random {};
   // doubleTemplate(Random{});  // Error
 
@@ -203,8 +203,8 @@ void preprocessing() {
        << " pf: " << __PRETTY_FUNCTION__ << " fnc: " << __func__
        << " s: " << __STDC__ << endl;
 
-  auto loc = source_location::current();
-  cout << "line: " << loc.line() << ":" << loc.function_name() << endl;
+  // auto loc = source_location::current();
+  // cout << "line: " << loc.line() << ":" << loc.function_name() << endl;
 
   // Select code based on C/C++ or Compiler or OS or Environment
 
