@@ -80,20 +80,20 @@ struct List {
 
 void customIterator() {
   // Custom Iterators
-  List list;
-  list.push_back(1);
-  list.push_back(14);
-  list.push_back(33);
+  // List list;
+  // list.push_back(1);
+  // list.push_back(14);
+  // list.push_back(33);
 
-  cout << *find(list.begin(), list.end(), 14) << endl;
+  // cout << *find(list.begin(), list.end(), 14) << endl;
 
-  for (const auto &it : list)
-    cout << it << " ";
+  // for (const auto &it : list)
+  //   cout << it << " ";
 }
 inline void iteratorUtility() {
   //
   // std::min_element()
-  __builtin_popcount(0);
+  // __builtin_popcount(0);
 }
 void algorithmsLibrary() {
   //

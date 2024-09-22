@@ -1,12 +1,16 @@
 cmake_minimum_required(VERSION 3.5)
 
-project("modern-cpp")
 
 set(CMAKE_C_COMPILER /opt/homebrew/opt/llvm/bin/clang CACHE STRING "Clang compiler") 
 set(CMAKE_CXX_COMPILER /opt/homebrew/opt/llvm/bin/clang++ CACHE STRING "Clang++ compiler")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Generate compile commands")
 
 set(CMAKE_CXX_STANDARD 23 CACHE STRING "C++ standard to conform to")
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_C_STANDARD 23 CACHE STRING "C++ standard to conform to")
+set(CMAKE_C_STANDARD_REQUIRED True)
+
+project("modern-cpp")
 
 find_package(LLVM REQUIRED CONFIG)
 find_package(MLIR REQUIRED CONFIG)
@@ -38,7 +42,9 @@ get_property(conversion_libs GLOBAL PROPERTY MLIR_CONVERSION_LIBS)
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 # Add all Cpp files from the Chapters directory
 file(GLOB_RECURSE FEDERICO_FILES FedericoBusato/*.cpp)
-add_executable(modernCpp modernCpp.cpp ${FEDERICO_FILES}) 
+file(GLOB_RECURSE DSA_C DSA_Crud/*.c)
+file(GLOB_RECURSE DSA_CPP DSA_Crud/*.cpp)
+add_executable(modernCpp modernCpp.cpp ${FEDERICO_FILES} ${DSA_C} ${DSA_CPP})
 
 # target_include_directories(modernCpp PRIVATE FedericoBusato)
 # target_sources(modernCpp PRIVATE ${FEDERICO_FILES})
