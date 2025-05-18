@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-
+set(CMAKE_GENERATOR "Ninja" CACHE STRING "Use Ninja generator" FORCE)
 set(CMAKE_C_COMPILER /opt/homebrew/opt/llvm/bin/clang CACHE STRING "Clang compiler") 
 set(CMAKE_CXX_COMPILER /opt/homebrew/opt/llvm/bin/clang++ CACHE STRING "Clang++ compiler")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Generate compile commands")

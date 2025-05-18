@@ -157,6 +157,24 @@ void floatIssues() {
   // Switch to log scale: Multiplication becomes addition
   // Compensation algo: Kahan summation, Dekker's fast two sum, Rump's acc sum
 }
+
+void catastrophicCancellation() {
+  cout << "Integers are more Accurate than Floats for Large Numbers" << endl;
+  cout << "1677217.0 from float and double to Int" << endl;
+  cout << (int)1677217.0f << endl;
+  cout << (int)1677217.0 << endl;
+
+  // Case 1
+  cout << "Catastrophic Cancellation: FP Increment" << endl;
+  float x = 0.0f;
+  for (int i = 0; i < 20'000'000; i++) {
+    x += 1.0f;
+  }
+  cout << "x from 0.0f to 20M += 1.0f = " << x << endl;
+  cout << "Catastrophic Cancellation: Ceiling Division:" << endl;
+  x = std::ceil((float)20'000'001 / 2.0f);
+  cout << "20M+1 / 2.0f = " << x << endl;
+}
 } // namespace CH3
 // ch3.cpp
 void ch3() {
@@ -164,4 +182,5 @@ void ch3() {
   CH3::integers();
   CH3::floats();
   CH3::floatIssues();
+  CH3::catastrophicCancellation();
 }
