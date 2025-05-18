@@ -148,7 +148,7 @@ void floatIssues() {
   cout << x << endl;
 
   // Use relative error for comparing floats
-  // For comparing, use epsilon
+  // For comparing, use relative_error
 
   // Float/Double:
   // Prefer using multiplication and division over addition and subtraction
@@ -177,18 +177,18 @@ void catastrophicCancellation() {
   cout << "20M+1 / 2.0f = " << x << endl;
 }
 void floatComparison() {
-  float epsilon = 0.01;
-  function<bool(float, float)> areFloatNearlyEqual = [epsilon](float a,
-                                                               float b) {
-    // Use relative error, and use max absolute for division
-    // (a-b)
-    if (!isfinite(a) || !isfinite(b))
-      return false;
-    auto diff = abs(a - b);
-    auto denominator = max(abs(a), abs(b));
-    auto relative_error = diff / denominator;
-    return relative_error < epsilon;
-  };
+  const float relative_error = 0.01;
+  function<bool(float, float)> areFloatNearlyEqual =
+      [relError = relative_error](float a, float b) {
+        // Use relative error, and use max absolute for division
+        // (a-b)
+        if (!isfinite(a) || !isfinite(b))
+          return false;
+        auto diff = abs(a - b);
+        auto denominator = max(abs(a), abs(b));
+        auto relative_error = diff / denominator;
+        return relative_error <= relError;
+      };
 }
 
 } // namespace CH3
