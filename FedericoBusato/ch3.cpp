@@ -1,6 +1,7 @@
 #include <cfenv>
 #include <cstdint>
 #include <cstdio>
+#include <functional>
 #include <iostream>
 #include <limits>
 #include <stdio.h>
@@ -175,6 +176,21 @@ void catastrophicCancellation() {
   x = std::ceil((float)20'000'001 / 2.0f);
   cout << "20M+1 / 2.0f = " << x << endl;
 }
+void floatComparison() {
+  float epsilon = 0.01;
+  function<bool(float, float)> areFloatNearlyEqual = [epsilon](float a,
+                                                               float b) {
+    // Use relative error, and use max absolute for division
+    // (a-b)
+    if (!isfinite(a) || !isfinite(b))
+      return false;
+    auto diff = abs(a - b);
+    auto denominator = max(abs(a), abs(b));
+    auto relative_error = diff / denominator;
+    return relative_error < epsilon;
+  };
+}
+
 } // namespace CH3
 // ch3.cpp
 void ch3() {
